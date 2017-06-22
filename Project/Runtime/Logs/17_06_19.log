@@ -1,0 +1,58 @@
+[ 2017-06-19T16:47:22+08:00 ] 127.0.0.1 /index.php/Index/run
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.000771s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000886s ]
+NOTIC: [8] Use of undefined constant PHPOK_SESSIONNAME - assumed 'PHPOK_SESSIONNAME' E:\wangzhan\dzp\Project\Lib\Action\IndexAction.class.php 第 22 行.
+NOTIC: [8] Use of undefined constant PHPOK_SESSIONNAME - assumed 'PHPOK_SESSIONNAME' E:\wangzhan\dzp\Project\Lib\Action\IndexAction.class.php 第 23 行.
+NOTIC: [8192] mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead E:\wangzhan\dzp\ThinkPHP\Lib\Driver\Db\DbMysql.class.php 第 55 行.
+SQL: SHOW COLUMNS FROM `magic_user` [ RunTime:0.003336s ]
+NOTIC: [8] Use of undefined constant _logic - assumed '_logic' E:\wangzhan\dzp\Project\Lib\Action\IndexAction.class.php 第 28 行.
+NOTIC: [8192] preg_replace(): The /e modifier is deprecated, use preg_replace_callback instead E:\wangzhan\dzp\ThinkPHP\Lib\Core\Db.class.php 第 604 行.
+SQL: SELECT * FROM `magic_user` WHERE ( `username` = 'admin' ) AND ( `password` = '21232f297a57a5a743894a0e4a801fc3' )  [ RunTime:0.000316s ]
+SQL: SHOW COLUMNS FROM `magic_config` [ RunTime:0.004088s ]
+NOTIC: [8192] preg_replace(): The /e modifier is deprecated, use preg_replace_callback instead E:\wangzhan\dzp\ThinkPHP\Lib\Core\Db.class.php 第 604 行.
+SQL: SELECT * FROM `magic_config`  [ RunTime:0.000416s ]
+NOTIC: [8] Use of undefined constant PHPOK_SESSIONNAME - assumed 'PHPOK_SESSIONNAME' E:\wangzhan\dzp\Project\Lib\Action\IndexAction.class.php 第 93 行.
+NOTIC: [8] Use of undefined constant PHPOK_SESSIONNAME - assumed 'PHPOK_SESSIONNAME' E:\wangzhan\dzp\Project\Lib\Action\IndexAction.class.php 第 94 行.
+SQL: SHOW COLUMNS FROM magic_user as u [ RunTime:0.000221s ]
+ERR: 1064:You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'as u' at line 1
+ [ SQL语句 ] : SHOW COLUMNS FROM magic_user as u
+NOTIC: [8192] preg_replace(): The /e modifier is deprecated, use preg_replace_callback instead E:\wangzhan\dzp\ThinkPHP\Lib\Core\Db.class.php 第 604 行.
+SQL: SELECT u.id,n.number FROM magic_user as u inner join magic_useraddnumber as n on u.id=n.aid WHERE ( u.username = 'admin' ) AND ( u.password = '21232f297a57a5a743894a0e4a801fc3' ) LIMIT 1   [ RunTime:0.019828s ]
+SQL: SHOW COLUMNS FROM `magic_useraddnumber` [ RunTime:0.003812s ]
+SQL: UPDATE `magic_useraddnumber` SET `number`=70 WHERE ( `aid` = 1 ) [ RunTime:0.000470s ]
+SQL: SHOW COLUMNS FROM `magic_config` [ RunTime:0.003051s ]
+NOTIC: [8] Use of undefined constant praisenumber - assumed 'praisenumber' E:\wangzhan\dzp\Project\Lib\Action\IndexAction.class.php 第 120 行.
+NOTIC: [8192] preg_replace(): The /e modifier is deprecated, use preg_replace_callback instead E:\wangzhan\dzp\ThinkPHP\Lib\Core\Db.class.php 第 604 行.
+SQL: SELECT `praisenumber` FROM `magic_config` WHERE ( `id` = 7 ) LIMIT 1   [ RunTime:0.000287s ]
+SQL: UPDATE `magic_config` SET `praisenumber`=-1 WHERE ( `id` = 7 ) [ RunTime:0.000278s ]
+
+[ 2017-06-19T16:50:05+08:00 ] 127.0.0.1 /index.php/Index/run
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.000883s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000989s ]
+NOTIC: [8] Use of undefined constant PHPOK_SESSIONNAME - assumed 'PHPOK_SESSIONNAME' E:\wangzhan\dzp\Project\Lib\Action\IndexAction.class.php 第 23 行.
+NOTIC: [8] Use of undefined constant PHPOK_SESSIONNAME - assumed 'PHPOK_SESSIONNAME' E:\wangzhan\dzp\Project\Lib\Action\IndexAction.class.php 第 24 行.
+NOTIC: [8192] mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead E:\wangzhan\dzp\ThinkPHP\Lib\Driver\Db\DbMysql.class.php 第 55 行.
+SQL: SHOW COLUMNS FROM `magic_user` [ RunTime:0.004706s ]
+NOTIC: [8] Use of undefined constant _logic - assumed '_logic' E:\wangzhan\dzp\Project\Lib\Action\IndexAction.class.php 第 29 行.
+NOTIC: [8192] preg_replace(): The /e modifier is deprecated, use preg_replace_callback instead E:\wangzhan\dzp\ThinkPHP\Lib\Core\Db.class.php 第 604 行.
+SQL: SELECT * FROM `magic_user` WHERE ( `username` = 'admin' ) AND ( `password` = '21232f297a57a5a743894a0e4a801fc3' )  [ RunTime:0.000443s ]
+SQL: SHOW COLUMNS FROM `magic_config` [ RunTime:0.004864s ]
+NOTIC: [8192] preg_replace(): The /e modifier is deprecated, use preg_replace_callback instead E:\wangzhan\dzp\ThinkPHP\Lib\Core\Db.class.php 第 604 行.
+SQL: SELECT * FROM `magic_config`  [ RunTime:0.000469s ]
+NOTIC: [8] Use of undefined constant PHPOK_SESSIONNAME - assumed 'PHPOK_SESSIONNAME' E:\wangzhan\dzp\Project\Lib\Action\IndexAction.class.php 第 94 行.
+NOTIC: [8] Use of undefined constant PHPOK_SESSIONNAME - assumed 'PHPOK_SESSIONNAME' E:\wangzhan\dzp\Project\Lib\Action\IndexAction.class.php 第 95 行.
+SQL: SHOW COLUMNS FROM magic_user as u [ RunTime:0.000197s ]
+ERR: 1064:You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'as u' at line 1
+ [ SQL语句 ] : SHOW COLUMNS FROM magic_user as u
+NOTIC: [8192] preg_replace(): The /e modifier is deprecated, use preg_replace_callback instead E:\wangzhan\dzp\ThinkPHP\Lib\Core\Db.class.php 第 604 行.
+SQL: SELECT u.id,n.number FROM magic_user as u inner join magic_useraddnumber as n on u.id=n.aid WHERE ( u.username = 'admin' ) AND ( u.password = '21232f297a57a5a743894a0e4a801fc3' ) LIMIT 1   [ RunTime:0.000354s ]
+SQL: SHOW COLUMNS FROM `magic_useraddnumber` [ RunTime:0.003155s ]
+SQL: UPDATE `magic_useraddnumber` SET `number`=69 WHERE ( `aid` = 1 ) [ RunTime:0.000283s ]
+SQL: SHOW COLUMNS FROM `magic_config` [ RunTime:0.005857s ]
+NOTIC: [8] Use of undefined constant praisenumber - assumed 'praisenumber' E:\wangzhan\dzp\Project\Lib\Action\IndexAction.class.php 第 121 行.
+NOTIC: [8192] preg_replace(): The /e modifier is deprecated, use preg_replace_callback instead E:\wangzhan\dzp\ThinkPHP\Lib\Core\Db.class.php 第 604 行.
+SQL: SELECT `praisenumber` FROM `magic_config` WHERE ( `id` = 7 ) LIMIT 1   [ RunTime:0.000294s ]
+SQL: UPDATE `magic_config` SET `praisenumber`=-1 WHERE ( `id` = 7 ) [ RunTime:0.000244s ]
+
