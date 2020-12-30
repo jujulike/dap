@@ -1,0 +1,21 @@
+{
+    "leek-fund.funds": [
+    
+        "001632",
+        "420009",
+        "320007",
+        "003096",
+        "001102",
+        "003885",
+        "001071",
+        "005963"
+    ],
+    "easyTranslator.API.type": "youdao",
+    "easyTranslator.API.youdaoAppKey": "689ebb81b2b18cb6",
+    "easyTranslator.API.youdaoKey": "9LcLKLXuAgcjtiB1cYVkomymg6lowFdZ",
+    "easyTranslator.API.baiduKey": "21323412424",
+    "easyTranslator.API.baiduAPPID": "21421",
+    "translate.youdao.appKey": "689ebb81b2b18cb6",
+    "translate.youdao.appSecret": "9LcLKLXuAgcjtiB1cYVkomymg6lowFdZ",
+    "git.ignoreLimitWarning": true
+}

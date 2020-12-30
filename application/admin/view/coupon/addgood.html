@@ -1,0 +1,218 @@
+{extend name="public/base" /}
+
+{block name="body"}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">筛选</div>
+                <div class="panel-body">
+                    <form method="get" action="" class="form-horizontal">
+                        <div class="form-group">
+                       
+                            <label class="col-sm-2 control-label">商品名</label>
+                            <div class="col-sm-2">
+                                <input type="text" name="keyword" class="form-control" value="{:input('keyword')}">
+                            </div>
+                            <label class="col-sm-2 control-label">推荐状态</label>
+                            <div class="col-sm-2">
+                                <select name="is_xs" id="is_xs" class="form-control">
+                                    <option value="">请选择</option>
+                                    <option value="1" {if $is_xs==1}selected{/if}>否</option>
+                                    <option value="2" {if $is_xs==2}selected{/if}>是</option>
+                                </select>
+                            </div>
+                            <label class="col-sm-2 control-label">状态</label>
+                            <div class="col-sm-2">
+                                <select name="is_show" id="is_show" class="form-control">
+                                    <option value="">不限</option>
+                                    <option value="1" {if $is_show==1}selected{/if}>下架</option>
+                                    <option value="2" {if $is_show==2}selected{/if}>上架</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">分类</label>
+                            <div class="col-sm-2">
+                                <select  name="cateid" id="tid" class="form-control">
+                                    <option value="">请选择一级</option>
+                                    {volist name="category" id="v"}
+                                        <option value="{$v['id']}" {if $cateid==$v['id']} selected{/if}>{$v['catename']}</option>
+                                    {/volist}
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <select name="cateid1" id="cateid" class="form-control">
+                                    <option value="">请选择二级分类</option>
+                                    {volist name="category1" id="v"}
+                                        <option value="{$v['id']}" {if $cateid1==$v['id']} selected{/if}>{$v['catename']}</option>
+                                    {/volist}
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-default" type="submit">搜索</button>
+                            </div>
+                        </div>
+                        <div class="form-group"></div>
+                    </form>
+                </div>
+            </div>
+           
+
+ <form  method="post" class="form-addgood" id="form-addgood">
+            <!-- 数据列表 -->
+            <div class="ibox float-e-margins">
+                 
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <table class="table table-striped add_tableimg2_table">
+                            <thead>
+                                <tr>
+                                    <th class="i-checks" style="width: 20px;"><input type="checkbox" id="all" ></th>
+                                    <th class="" style="width: 50px;">ID</th>
+                                    <th class="">商品名称</th>
+                                    <th>商品图片</th>
+                                    <th>规格</th>
+                                    <th class="">售价</th>
+                                    <th class="">状态</th>
+                                    <th class="" style="width: 80px; text-align: right;">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {notempty name="_list"}
+                                {volist name="_list" id="vo"}
+                                <tr>
+                                    <td class="">
+                                    <input type="checkbox" name="id[]" value="{$vo.id}"></td>
+                                    <td>{$vo.id} </td>
+                                    <td><span class="text-danger"></span>{$vo.title}</td>
+                                    <td><img src="{$vo.id|getGoodPic}" style="max-height: 50px;max-width: 50px;"></td>
+                                    <td>{$vo.goods_option} </td>
+                                  
+                                
+                                    <td>{$vo.price} </td>
+                                  
+                                    <td>
+                                        <span data="{$vo['is_show']}" class="label label-default {eq name="vo.is_show" value="1"}label-info{/eq} " onclick="setProperty(this,{$vo['id']},'is_show')"> {eq name="vo.is_show" value="1"}上架{else/}下架{/eq}</span>
+                                    </td>
+                                    <td align="right">
+                                        <a href="{:url('good/addgoods',['id'=>$vo.id])}" class="authorize">编辑</a>
+                                        <!-- <a href="{:url('Good/changeSent?method=deleteuser&model=good&id='.$vo['id'])}" class="confirm ajax-get">删除</a> -->
+                                    </td>
+                                </tr>
+                                {/volist}
+                                {else/}
+                                <td colspan="9" class="text-center"> aOh! 暂时还没有内容! </td>
+                                {/notempty}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- 分页-->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            {$_page}
+                        </div>
+                    </div>
+                    <!-- 分页 - 结束 -->
+                     <div class="form-group">
+                        <div class="col-sm-9 col-sm-offset-9">
+                            <input type="hidden" name="user_id" id="user_id">
+                            <button class="btn btn-primary " id="submit" type="submit" target-form="form-addgood">确 定</button>
+                            <button class="btn btn-default" onclick="javascript:history.back(-1);return false;">返 回</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+            </form>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+    
+
+<script type="text/javascript">
+highlight_subnav('{:url(' coupon / zt ')}');
+
+
+    $('#tid').change(function(){
+     var html = "<option value='0'>请选择二级分类</option>";	
+     var id = $(this).val();
+       
+        $.post("{:url('Good/on_cate')}",{pid:id},function(d){
+           
+            $.each(d, function (i, item) {
+                html +='<option value='+item.id+'>'+item.catename+'</option>';
+            })
+          
+            $("#cateid").html($(html));
+     
+        },"json");
+    })
+    
+    //状态修改
+    function setProperty(obj,id,type){
+        $(obj).html($(obj).html() + "...");
+        $.post("{:url('Good/setproperty?model=good')}",{id:id,type:type, data: obj.getAttribute("data"),attrid:2,sta:1}
+            ,function(d){
+                $(obj).html($(obj).html().replace("...",""));
+                if(type=='is_show'){
+                 $(obj).html( d.data=='1'?'上架':'下架');
+                }
+                if(type=='is_tj'){
+                 $(obj).html( d.data=='1'?'是':'否');
+                }
+                
+                $(obj).attr("data",d.data);
+                if(d.result==1){
+                    $(obj).toggleClass("label-info");
+                }
+            }
+            ,"json"
+        );
+    }
+        $("#all").click(function () {
+            if (this.checked) {
+                $('input[type|=checkbox]').prop('checked', true)
+            } else {
+                $('input[type|=checkbox]').prop('checked', false)
+            }
+            var user_ids='';
+            $("input[name='id[]']:checked").each(function () {
+                if (user_ids) {
+                    user_ids += ',' + $(this).val();
+                } else {
+                    user_ids += $(this).val();
+                }
+
+            })
+            $('#user_id').val(user_ids);
+        });
+        $("input[name='id[]']").click(function () {
+           
+          if($(this).find("input").is(':checked')){
+                  $(this).find("input").add('checked', true);
+            }else{
+                $(this).find("input").prop('checked', false);
+            }
+           
+            var user_ids='';
+            $("input[name='id[]']:checked").each(function () {
+                if (user_ids) {
+                    user_ids += ',' + $(this).val();
+                } else {
+                    user_ids += $(this).val();
+                }
+
+            })
+           console.log($("input[name='id[]']:checked").length);
+            $('#user_id').val(user_ids);
+        })
+
+
+
+</script>
+{/block}

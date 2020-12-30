@@ -1,0 +1,32 @@
+<div class="form-group">
+    <label class="col-xs-12 col-sm-3 col-md-2 control-label">商品规格：</label>
+    <div class="col-sm-9 col-xs-12">
+     <table class="table table-hover" id="attrTable">
+        <thead class="text-c">
+            <tr>
+                <th></th>
+                <th>规格名</th>
+                <th>商品价格</th>
+                <th>拼团价格</th>
+                <th>库存</th>
+                <th>重量（克）</th>
+            </tr>
+        </thead>
+        <tbody>
+            {volist name="option" id="vo"}
+            <tr>
+                <td><a href="javascript:;" onclick="delLevel(this,{$vo.id})">[-]条件{$i}</a></td>
+                <td><input type="text" class="form-control" name="rebate[{$i}][title]" value="{$vo.title}"/></td>
+                <td><input type="text" class="form-control" name="rebate[{$i}][price]" value="{$vo.price}"/></td>
+                <td><input type="text" class="form-control" name="rebate[{$i}][groupprice]" value="{$vo.groupprice}"/></td>
+                <td><input type="text" class="form-control" name="rebate[{$i}][total]" value="{$vo.total}"/></td>
+                <td><input type="text" class="form-control" name="rebate[{$i}][weight]" value="{$vo.weight}"/></td>    
+                <input type="hidden"  name="rebate[{$i}][option_id]" value="{$vo.id}"/>
+            </tr>
+            {/volist}
+                    
+        </tbody>
+    </table>
+        <a href="javascript:;" onclick="addLevel(this)">添加规格</a>
+    </div>
+</div>

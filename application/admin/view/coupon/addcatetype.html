@@ -1,0 +1,97 @@
+{extend name="public/base" /}
+<script src="../../../../../public/ueditor/ueditor.all.js"></script>
+{block name="body"}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox-content">
+                <form action="{:url()}" method="post" class="form-horizontal" enctype="multipart/form-data">
+                    <input type="hidden" name="id" value="{$catetype.id|default='0'}">
+                    
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">模块名称</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" required name="typename" value="{$catetype.typename|default=''}">
+                        </div>
+                        <div class="col-sm-4"><p class="help-block">用于显示名称</p></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">排序</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" required name="sorts" value="{$catetype.sorts|default=''}">
+                        </div>
+                        
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">时间</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="endtime" id="hello" class="form-control" value="{$catetype.endtime|default=''}">
+                        </div>
+                        
+                    </div>
+                    
+                   
+                   
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">是否显示<span class="check-tips"></span></label>
+                        <div class="col-sm-6">
+                            <input type="radio" name="is_show" class="i-checks" value="1" {eq name="catetype['is_show']" value="1"}checked{/eq} >  是
+                            <input type="radio" name="is_show" class="i-checks" value="0" {eq name="catetype['is_show']" value="0"}checked{/eq} > 否
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="col-sm-9 col-sm-offset-2">
+
+                        <button class="btn btn-primary " id="submit" type="submit" target-form="form-horizontal">确 定</button>
+                        <button class="btn btn-default" onclick="javascript:history.back(-1);return false;">返 回</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+    <script type="text/javascript">
+        //导航高亮
+        highlight_subnav("{:url('coupon')}");
+    </script>
+<script type="text/javascript">
+    laydate.render({
+        elem: '#hello' //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
+        ,type: 'datetime'
+        ,range: true
+    });
+    $(function(){
+        $("#file_head").on('change',function(){
+
+            var objUrl = getObjectURL(this.files[0]) ;
+            console.log("objUrl = "+objUrl) ;
+            console.log(this.files[0]) ;
+            /*var formData = this.files[0];*/
+            if (objUrl) {
+                $("#showhead").attr("src", objUrl) ;
+            }
+        });
+        $("#showhead").click(function(){
+            $("#file_head").click();
+        });
+    });
+    //建立一個可存取到該file的url
+    function getObjectURL(file) {
+        var url = null ;
+        if (window.createObjectURL!=undefined) { // basic
+            url = window.createObjectURL(file) ;
+        } else if (window.URL!=undefined) { // mozilla(firefox)
+            url = window.URL.createObjectURL(file) ;
+        } else if (window.webkitURL!=undefined) { // webkit or chrome
+            url = window.webkitURL.createObjectURL(file) ;
+        }
+        return url ;
+    }
+</script>
+{/block}

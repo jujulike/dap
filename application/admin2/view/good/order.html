@@ -1,0 +1,137 @@
+{extend name="public/base" /}
+
+{block name="body"}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            
+
+           <div class="panel panel-info">
+                <div class="panel-heading">筛选</div>
+                <div class="panel-body">
+                    <form method="get" action="{:url('')}" class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">订单号</label>
+                            <div class="col-sm-2">
+                                <input type="text" name="order_sn" class="form-control" value="{:input('order_sn')}">
+                            </div>
+                            <label class="col-sm-1 control-label">配送方式</label>
+                            <div class="col-sm-2">
+                                <select name="is_dispatch" id="is_dispatch" class="form-control">
+                                    <option value="">不限</option>
+                                    <option value="1" {if $is_dispatch==1}selected{/if}>在线发货</option>
+                                    <option value="2" {if $is_dispatch==2}selected{/if}>上门自提</option>
+                                </select>
+                            </div>
+                            <label class="col-sm-1 control-label">支付方式</label>
+                            <div class="col-sm-2">
+                                <select name="pay_type" id="pay_type" class="form-control">
+                                    <option value="">不限</option>
+                                    <option value="1" {if $pay_type==1}selected{/if}>余额支付</option>
+                                    <option value="2" {if $pay_type==2}selected{/if}>微信支付</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">验证码</label>
+                            <div class="col-sm-2">
+                                <input type="text" name="order_code" class="form-control" value="{:input('order_code')}">
+                            </div>
+
+                            <label class="col-sm-1 control-label">用户信息</label>
+                            <div class="col-sm-2">
+                                <input type="text" name="keyword" class="form-control" value="{:input('keyword')}">
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="hidden" name="types" value="{$types}">
+                                <button class="btn btn-default" type="submit">搜索</button>
+                            </div>
+                        </div>
+                        <div class="form-group"></div>
+                    </form>
+                </div>
+            </div>
+			
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="panel-body">
+                        <ul class="nav nav-tabs" id="myTab">
+                            <li {if $types==0}class="active"{/if}><a href="{:url('order')}">全部</a></li>
+                            <li {if $types==1}class="active"{/if}><a href="{:url('order',array('types'=>1))}">未付款</a></li>
+                            <li {if $types==2}class="active"{/if}><a href="{:url('order',array('types'=>2))}">待发货</a></li>
+                            <li {if $types==3}class="active"{/if}><a href="{:url('order',array('types'=>3))}">待收货</a></li>
+                            <li {if $types==4}class="active"{/if}><a href="{:url('order',array('types'=>4))}">已完成</a></li>
+                            <li {if $types==5}class="active"{/if}><a href="{:url('order',array('types'=>5))}">退款</a></li>
+                        </ul>
+                    </div>
+                    <div class="table-responsive">
+                        <form class="ids" >
+                            <table class="table table-striped add_tableimg2_table">
+                                <thead>
+                                <tr>
+                                    <th class="i-checks checks-some"><input type="checkbox" ></th>
+                                    <th>订单号</th>
+									<th>金额</th>
+									<th>提货方式</th>
+                                    <th>支付方式</th>
+									<th>订单状态</th>
+									<th>下单时间</th>
+                                    <th class="text-right">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {notempty name="list"}
+                                {volist name="list" id="vo"}
+                                <tr>
+                                    <td class="i-checks checks-block" style="width: 20px;"><input type="checkbox" name="id[]" value="{$vo.id}"></td>
+                                    <td>{$vo.order_sn}</td>
+									<td>{$vo.price}</td>
+                                    <td>{if $vo['is_dispatch']==1}上门自提
+                                        {else}在线发货{/if}</td>
+                                    <td>{if $vo['pay_type']==1}微信支付
+                                        {else}余额支付{/if}</td>
+                                    <td>
+                                        {if $vo['sent']>2}<span class="label label-success">已完成</span>
+                                        {elseif $vo['sent']==2}<span class="label label-info">待收货</span>
+                                        {elseif $vo['sent']==1}<span class="label label-info">待发货</span>
+                                        {elseif $vo['sent']==-1}
+                                        <span class="label label-danger">{if $vo['isrefund']==1}已退款{else}未退款{/if}</span>
+                                        {else}<span class="label label-warning">未付款</span>{/if}
+                                    </td>
+                                    <td>{$vo.addtime|date="Y-m-d H:i",###}</td>
+									<td class="text-right">
+                                        
+                                        <a href="{:url('order_info',['id'=>$vo.id])}" class="authorize">详情</a>
+                                        <a href="{:url('order_del',['id'=>$vo.id])}" class="confirm ajax-get">删除</a>
+                                    </td>
+                                </tr>
+                                {/volist}
+                                {else/}
+                                <tr><td colspan="10" class="text-center"> aOh! 暂时还没有内容! </td></tr>
+                                {/notempty}
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                    <!-- 分页-->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            {$_page}
+                        </div>
+                    </div>
+                    <!-- 分页 - 结束 -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script>
+    $(function() {
+        //导航高亮
+        highlight_subnav('{:url('Scorde/order')}');
+    });
+</script>
+{/block}

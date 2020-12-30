@@ -1,0 +1,7 @@
+/runtime
+/public
+/thinkphp
+/vendor
+.idea
+.vscode
+.DS_Store

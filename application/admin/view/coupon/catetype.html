@@ -1,0 +1,85 @@
+{extend name="public/base" /}
+
+{block name="body"}
+<div class="wrapper wrapper-content animated fadeInRight">
+	<div class="row">
+		<div class="col-lg-12">
+            <div class="mail-box-header">
+               
+            </div>
+
+
+            <!-- 数据列表 -->
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <table class="table table-striped add_tableimg2_table">
+                            <thead>
+                                <tr>
+                                    
+                                    <th class="" style="width: 50px;">排序</th>
+                                    <th class="">模块名称</th>
+                                    <th class="">时间</th>
+                                    <th class="">显隐</th>
+                                    <th class="" style="width: 80px; text-align: right;">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {notempty name="_list"}
+                                {volist name="_list" id="vo"}
+                                <tr>
+                                   
+                                    <td><input type="text" value="{$vo.sorts}" onblur="set_sorts(this.value,{$vo.id})"> </td>
+                                    <td>{$vo.typename}</td>
+                                    <td>{$vo.endtime|default=''}</td>
+                                    <td>
+                                        <a href="javascript:" data="{$vo['is_show']}" class="ajax-get" onclick="setProperty(this,{$vo['id']},'is_show')">
+                                            {eq name="vo.is_show" value="1"}显示
+                                            {else/}隐藏{/eq}
+                                        </a>
+                                    </td>
+                                    <td align="right">
+                                        <a href="{:url('addcatetype?id='.$vo['id'])}" class="authorize">编辑</a>
+                                    
+                                    </td>
+                                </tr>
+                                {/volist}
+                                {else/}
+                                <td colspan="9" class="text-center"> aOh! 暂时还没有内容! </td>
+                                {/notempty}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- 分页-->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            {$_page}
+                        </div>
+                    </div>
+                    <!-- 分页 - 结束 -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+	
+
+<script type="text/javascript">
+function set_sorts(values,id){
+    $.post("{:url('set_sorts')}",{id:id,values:values}
+        );
+}
+    //状态修改
+    function setProperty(obj,id,type){
+        $(obj).html($(obj).html() + "...");
+        $.post("{:url('Coupon/setproperty?model=catetype')}",{id:id,type:type, data:obj.getAttribute("data")},function(d){
+                $(obj).html($(obj).html().replace("...",""));
+                $(obj).html( d.data=='1'?'显示':'隐藏');
+                $(obj).attr("data",d.data);
+        },"json");
+    }
+</script>
+{/block}

@@ -1,0 +1,36 @@
+{extend name="public/base" /}
+{block name="body"}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="mail-box-header">
+                <h3><i class="fa fa-group"></i> {$nickname} 所属的用户组列表 </h3>
+            </div>
+            <div class="ibox-content">
+                <div id="auth_groups">
+                    <form class="form-horizontal" action="{:url('addToGroup')}" method="post" enctype="application/x-www-form-urlencoded" >
+                        <div class="checkbox add_checkbox">
+                            {volist name="auth_groups" id="vo"}
+                            <label class="add_js_checkbox block"><input class="i-checks" type="checkbox" name="group_id[]" value="{$vo.id}" {php}if(strpos(','.$user_groups.',',",$vo[id],") !== false){echo 'checked';}{/php}> {$vo.title}</label>
+                            {/volist}
+                        </div>
+                        <input type="hidden" name="uid" value="{:input('uid')}">
+                        <input type="hidden" name="batch" value="true">
+                        <div class="hr-line-dashed"></div>
+                        <div>
+                            <button type="submit" class="btn btn-primary ajax-post" target-form="form-horizontal">确 定</button>
+                            <button class="btn btn-default" onclick="javascript:history.back(-1);return false;">返 回</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script type="text/javascript">
+    // 导航高亮
+    highlight_subnav('{:url('User/index')}');
+</script>
+{/block}

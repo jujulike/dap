@@ -1,0 +1,115 @@
+{extend name="public/base" /}
+
+{block name="body"}
+<div class="wrapper wrapper-content animated fadeInRight">
+	<div class="row">
+		<div class="col-lg-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">筛选</div>
+                <div class="panel-body">
+                    <form method="get" action="{:url('')}" class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">商品昵称</label>
+                            <div class="col-sm-2">
+                                <input type="text" name="name" class="form-control" value="{:input('name')}">
+                            </div>
+                            <label class="col-sm-2 control-label">客户昵称</label>
+                            <div class="col-sm-2">
+                                <input type="text" name="mobile" class="form-control" value="{:input('mobile')}">
+                            </div>
+                        </div>
+                        <div class="form-group"></div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 数据列表 -->
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+					
+                    <div class="table-responsive">
+                        <table class="table table-striped add_tableimg2_table">
+                            <thead>
+                                <tr>
+                                    <th class="i-checks checks-some" style="width: 20px;"><input type="checkbox" ></th>
+                                    <th class="">商品编号 {if $isorder==1}<a href="{:url('index',['isorder'=>0])}" class="fa fa-circle-o"></a>{else}<a href="{:url('index',['isorder'=>0])}" class="fa fa-circle"></a>{/if}
+                                    </th>
+									<th>商品名称</th>
+                                    <th class="">评论内容</th>
+                                    <th class="">评分</th>
+                                    <th class="">评论时间</th>
+                                   
+                                  
+                                    <th class="" style="width: 100px; text-align: right;">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {notempty name="_list"}
+                                {volist name="_list" id="vo"}
+                                <tr>
+                                    <td class="i-checks checks-block ids"><input type="checkbox" name="id[]" value="{$vo.uid}"></td>
+                                    <td>{$vo.gid} </td>
+                                    <td><span>{$vo.title|default="暂未填写"}</span></td>
+                                    <td>{$vo.content}</td>
+									<td><span>{$vo.score|default="暂未填写"}</span></td>
+                                   
+                                    <td><span>{if ($vo.addtime)}{$vo.addtime|time_format}{/if}</span></td>
+                                    
+									
+                                   
+                                    <td style=" text-align: right;">
+									
+                                      <!--<a href="{:url('myuser/info',['uid'=>$vo.uid])}" >详情</a>-->  
+										
+                                    </td>
+                                </tr>
+                                {/volist}
+                                {else/}
+                                <td colspan="7" class="text-center"> aOh! 暂时还没有内容! </td>
+                                {/notempty}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- 分页-->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            {$_page}
+                        </div>
+                    </div>
+                    <!-- 分页 - 结束 -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+	
+<script type="text/javascript">
+function set_level(values,uid){
+    $.post("{:url('set_level')}",{uid:uid,level:values}
+        );
+}
+
+    //导航高亮
+    highlight_subnav('{:url('comment/index')}');
+	//状态修改
+    function setProperty(obj,id,type){
+        $(obj).html($(obj).html() + "...");
+        $.post("{:url('Myuser/setpropertya?model=user')}",{id:id,type:type, data: obj.getAttribute("data"),attrid:2,sta:1}
+            ,function(d){
+                $(obj).html($(obj).html().replace("...",""));
+                if(type=='istype'){
+                 $(obj).html( d.data=='1'?'已是核销员':'待成为核销员');
+                }
+                $(obj).attr("data",d.data);
+                if(d.result==1){
+                    $(obj).toggleClass("label-info");
+                }
+            }
+            ,"json"
+        );
+    }
+</script>
+{/block}

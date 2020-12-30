@@ -1,0 +1,263 @@
+{extend name="public/base" /}
+{block name="body"}
+<script src="__PUBLIC__/admin/js/jquery-2.1.1.min.js"></script>
+<script src="__PUBLIC__/home/layui/layui.js"></script>
+<link href="__PUBLIC__/home/layui/css/layui.css" rel="stylesheet">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <style type="text/css">
+    .main .form-horizontal .form-group{margin-bottom:0;}
+    #modal-confirmsend .form-group{margin-bottom:15px;display: flex;}
+    #modal-confirmsend .control-label{margin-top:0;}
+</style>
+
+<div class="main">
+    
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                订单结算信息
+            </div>
+            <div class="panel-body">
+                
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">订单编号</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <p class="form-control-static">{$list['order_sn']}  </p>
+                        
+                    </div>
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">配送方式 :</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <p class="form-control-static">{$list['malltypecode']}  </p>
+                        
+                    </div>
+                    
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">收货人</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <p class="form-control-static">{$list['name']}  </p>
+                        
+                    </div>
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">收货电话</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <p class="form-control-static">{$list['mobile']} </p>
+                        
+                    </div>
+                </div>
+                
+               
+                
+               {if $list.malltype!=3}
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">收货地址 :</label>
+                    <div class="col-sm-9 col-xs-9">
+                        <p class="form-control-static">
+                           
+                                <span class="label label-warning">{$list.address}</span>
+                                
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">配送员 :</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <p class="form-control-static">{$list.address}</p>
+                    </div>
+                </div>
+              {/if}
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">下单时间 :</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <p class="form-control-static">{$list.orderaddtime|default="未填写"}</p>
+                    </div>
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">支付时间 :</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <p class="form-control-static">{$list.orderpaytime|default="未填写"}</p>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+        
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                商家信息
+            </div>
+            <div class="panel-body table-responsive">
+                <table class="table table-hover">
+                    <thead class="navbar-inner">
+                    <tr>
+                       
+                        <th style="width:10%;">商家名称</th>
+                        <th style="width:10%;">商品总金额</th>
+                        <th style="width:10%;">已结算金额</th>
+                        <th style="width:10%;color:red;">可结算金额</th>
+                        <th style="width:5%;">操作</th>
+                    </tr>
+                    </thead>
+                    {notempty name="shop"}
+                         {volist name="shop" id="vo"}
+                    <tr>
+                        <td>{$vo['shopname']}</td>
+                        <td>{$vo['totalprice']}</td>
+                        <td><span class="label label-info">{$vo['upmoney']}</span></td>
+                        <td style='color:red;font-weight:bold;'>{$vo['latemoney']}</td>
+                        <td><a href="{:url('jsinfo',['orderid'=>$vo.id])}">详情</a></td>
+                    </tr>
+                   {/volist}
+                                {else/}
+                                <tr><td colspan="5" class="text-center"> aOh! 暂时还没有内容! </td></tr>
+                                {/notempty}
+                   
+                   
+                </table>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            
+            <div class="panel-body table-responsive">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">订单总金额</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <p class="form-control-static">{$list['goodprice']}  </p>
+                        
+                    </div>
+                   
+                    
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">运费</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <p class="form-control-static">{$list['mallprice']|default="0"}  </p>
+                        
+                    </div>
+                    
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">优惠券</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <p class="form-control-static">{$list['couprice']|default="0"}  </p>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            </div>
+
+
+
+
+        
+        <!-- 确认发货 -->
+        <div id="modal-confirmsend" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="width:600px;margin:0px auto;">
+            <form class="form-horizontal form" action="" method="post" enctype="multipart/form-data">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                        <h3>快递信息</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-3 col-md-2 control-label">快递公司</label>
+                            <div class="col-sm-9 col-xs-12">
+                                <select class="form-control" name="express" id="express" required>
+                                    <option value="其他快递" data-name="其他快递">其他快递</option>
+                                    <option value="顺丰" data-name="顺丰">顺丰</option>
+                                    <option value="申通" data-name="申通">申通</option>
+                                    <option value="韵达快运" data-name="韵达快运">韵达快运</option>
+                                    <option value="天天快递" data-name="天天快递">天天快递</option>
+                                    <option value="圆通速递" data-name="圆通速递">圆通速递</option>
+                                    <option value="中通速递" data-name="中通速递">中通速递</option>
+                                    <option value="ems快递" data-name="ems快递">ems快递</option>
+                                    <option value="宅急送" data-name="宅急送">宅急送</option>
+                                    <option value="德邦物流" data-name="德邦物流">德邦物流</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-3 col-md-2 control-label">快递单号</label>
+                            <div class="col-sm-9 col-xs-12">
+                                <input type="text" name="expresssn" required class="form-control" />
+                            </div>
+                        </div>
+                        <div id="module-menus"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="id" value="{$item.id}">
+                        <button type="submit" class="btn btn-primary" target-form="form-horizontal">确认发货</button>
+                        <a href="#" class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</a>
+                    </div>
+                </div>
+            </div>
+            </form>
+        </div>
+
+        <!-- 修改价格 -->
+        <div id="modal-confirmprice" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="width:600px;margin:0px auto;">
+            <form class="form-horizontal form" action="{:url('upprice')}" method="post" enctype="multipart/form-data">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                        <h3>修改价格</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-3 col-md-2 control-label">商品价格</label>
+                            <div class="col-sm-9 col-xs-12">
+                               <input type="text" name="goodsprice" value="{$item.goodsprice}" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-3 col-md-2 control-label">快递价格</label>
+                            <div class="col-sm-9 col-xs-12">
+                                <input type="text" name="mailprice" value="{$item.mailprice}" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-3 col-md-2 control-label">优惠券</label>
+                            <div class="col-sm-9 col-xs-12">
+                                <input type="text" readonly value="{$item.couponprice}" class="form-control" />
+                            </div>
+                        </div>
+                        <div id="module-menus"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="id" value="{$item.id}">
+                        <button type="submit" class="btn btn-primary" target-form="form-horizontal">确认修改</button>
+                        <a href="#" class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</a>
+                    </div>
+                </div>
+            </div>
+            </form>
+        </div>
+
+    
+</div>
+
+</div>
+
+
+
+
+{/block}
+
+{block name="script"}
+<script type="text/javascript">
+    //导航高亮
+    highlight_subnav('{:url('Group/money')}');
+    $(function(){
+        {if !empty($express)}
+            $("#express").find("option[data-name='{$express['express_name']}']").attr("selected",true);
+            $("#expresscom").val($("#express").find("option:selected").attr("data-name"));
+        {/if}
+            $("#express").change(function(){
+                var obj = $(this);
+                var sel = obj.find("option:selected").attr("data-name");
+                $("#expresscom").val(sel);
+            });
+    });
+</script>
+{/block}

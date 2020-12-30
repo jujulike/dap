@@ -1,0 +1,86 @@
+{extend name="public/base" /}
+{block name="body"}
+<div class="wrapper wrapper-content animated fadeInRight">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="mail-box-header">
+				<!-- 表操作集合-->
+				<div class="mail-tools tooltip-demo">
+					<div class="btn-group add-offsetRight">
+						<div class="input-group inline">
+							<a class="btn btn-sm btn-primary" href="{:url('createGroup')}"><i class="fa fa-plus"></i> 添加</a>
+							<a class="btn btn-sm btn-success add-offsetLeft ajax-post" url="{:url('changestatus?method=resumeGroup')}" target-form="ids"><i class="fa fa-play"></i> 启用</a>
+							<a class="btn btn-sm btn-warning add-offsetLeft ajax-post" url="{:url('changestatus?method=forbidGroup')}" target-form="ids"><i class="fa fa-pause"></i> 禁用</a>
+							<a class="btn btn-sm btn-danger add-offsetLeft ajax-post confirm" url="{:url('changestatus?method=deleteGroup')}" target-form="ids"><i class="fa fa-trash-o"></i> 删除</a>
+						</div>
+					</div>
+
+					<div class="clearfix"></div>
+
+				</div>
+				<!-- 表操作集合 - 结束-->
+			</div>
+
+			<!-- 数据列表 -->
+			<div class="ibox float-e-margins">
+				<div class="ibox-content">
+					<div class="table-responsive">
+						<table class="table table-striped add_tableimg2_table">
+							<thead>
+								<tr>
+									<th class="i-checks checks-some"><input type="checkbox" ></th>
+									<th class="">用户组</th>
+									<th class="">描述</th>
+									<th class="">授权</th>
+									<th class="">状态</th>
+									<th class="">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								{notempty name="_list"}
+								{volist name="_list" id="vo"}
+								<tr>
+									<td class="i-checks checks-block ids"><input type="checkbox" name="id[]" value="{$vo.id}"></td>
+									<td><a href="{:url('AuthManager/editgroup?id='.$vo['id'])}">{$vo.title}</a> </td>
+									<td><span>{:mb_strimwidth($vo['description'],0,60,"...","utf-8")}</span></td>
+									<td>
+										<a href="{:url('AuthManager/access?group_name='.$vo['title'].'&group_id='.$vo['id'])}" >访问授权</a>
+										<!--<a href="{:url('AuthManager/category?group_name='.$vo['title'].'&group_id='.$vo['id'])}" >分类授权</a>-->
+										<a href="{:url('AuthManager/user?group_name='.$vo['title'].'&group_id='.$vo['id'])}" >成员授权</a>
+									</td>
+									<td>{$vo.status_text}</td>
+									<td>{eq name="vo.status" value="1"}
+										<a href="{:url('AuthManager/changeStatus?method=forbidGroup&id='.$vo['id'])}" class="ajax-get">禁用</a>
+										{else/}
+										<a href="{:url('AuthManager/changeStatus?method=resumeGroup&id='.$vo['id'])}" class="ajax-get">启用</a>
+										{/eq}
+										<a href="{:url('AuthManager/changeStatus?method=deleteGroup&id='.$vo['id'])}" class="confirm ajax-get">删除</a>
+									</td>
+								</tr>
+								{/volist}
+								{else/}
+								<td colspan="6" class="text-center"> aOh! 暂时还没有内容! </td>
+								{/notempty}
+							</tbody>
+						</table>
+					</div>
+					<!-- 分页-->
+					<div class="row">
+						<div class="col-lg-12">
+							{$_page}
+						</div>
+					</div>
+					<!-- 分页 - 结束 -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{/block}
+
+{block name="script"}
+<script type="text/javascript" charset="utf-8">
+    //导航高亮
+    highlight_subnav('{:url('AuthManager/index')}');
+</script>
+{/block}

@@ -1,0 +1,197 @@
+<div class="form-group">
+    <label class="col-sm-2 control-label">是否开启<span class="check-tips"></span></label>
+    <div class="col-sm-6">
+        <input type="radio" name="status" class="i-checks" value="0" {eq name="item['status']" value="0"}checked{/eq} >  是
+        <input type="radio" name="status" class="i-checks" value="1" {eq name="item['status']" value="1"}checked{/eq} > 否
+    </div>
+</div>
+<div class="form-group">
+	<label class="col-sm-2 control-label">排序</label>
+	<div class="col-sm-6">
+		<input type="text" name="sort" class="form-control" value="{$item['sort']}" />
+	</div>
+</div> 
+<div class="form-group">
+    <label class="col-sm-2 control-label">店铺头像</label>
+    <div class="col-sm-6">
+        <img id="showhead" src="{$item.headimgurl|default='/zhiing/admin/img/webuploader.png'}" style="max-height: 100px;max-width: 100px;">
+        <input type="file" name="mypic" id="file_head" style="display: none">
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label">封面图</label>
+    <button type="button" class="layui-btn layui-btn-primary pull-left" id="bigpic-pc">选择多图</button>
+</div>
+<div class="form-group">
+    <label class="col-sm-2 control-label">图片列表</label>
+    <div class="pic-more">
+        <ul class="pic-more-upload-list" id="bigpic">
+            {if $bigpic}
+				{volist name="bigpic" id="vo"}
+				<li class="item_img"><div class="operate">
+					<i class="toleft layui-icon"></i>
+					<i class="toright layui-icon"></i>
+					<i  class="close layui-icon"></i></div>
+					<img  src="{$vo}" style="width: 90px;height: 90px;" class="img" >
+					<input type="hidden" name="bigpic[]" value="{$vo}" />
+				</li>
+				{/volist}
+			{/if}
+        </ul>
+    </div>
+</div>
+
+
+<div class="form-group">
+    <label class="col-sm-2 control-label">店铺图</label>
+    <button type="button" class="layui-btn layui-btn-primary pull-left" id="piccs-pc">选择多图</button>
+</div>
+<div class="form-group">
+    <label class="col-sm-2 control-label">图片列表</label>
+    <div class="pic-more">
+        <ul class="pic-more-upload-list" id="piccs">
+            {if $piccs}
+				{volist name="piccs" id="vo"}
+				<li class="item_img"><div class="operate">
+					<i class="toleft layui-icon"></i>
+					<i class="toright layui-icon"></i>
+					<i  class="close layui-icon"></i></div>
+					<img  src="{$vo}" class="img"style="width: 90px;height: 90px;" >
+					<input type="hidden" name="piccs[]" value="{$vo}" />
+				</li>
+				{/volist}
+			{/if}
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+
+<script>
+    $(function(){
+        $("#file_head").on('change',function(){
+
+            var objUrl = getObjectURL(this.files[0]) ;
+            console.log("objUrl = "+objUrl) ;
+            console.log(this.files[0]) ;
+            /*var formData = this.files[0];*/
+            if (objUrl) {
+                $("#showhead").attr("src", objUrl) ;
+             
+            }
+        });
+        $("#showhead").click(function(){
+            $("#file_head").click();
+        });
+    });
+    //建立一個可存取到該file的url
+    function getObjectURL(file) {
+        var url = null ;
+        if (window.createObjectURL!=undefined) { // basic
+            url = window.createObjectURL(file) ;
+        } else if (window.URL!=undefined) { // mozilla(firefox)
+            url = window.URL.createObjectURL(file) ;
+        } else if (window.webkitURL!=undefined) { // webkit or chrome
+            url = window.webkitURL.createObjectURL(file) ;
+        }
+        return url ;
+    }
+    layui.use('upload', function(){
+        var $ = layui.jquery;
+        var upload = layui.upload;
+
+        upload.render({
+            elem: '#piccs-pc',
+            url: '{:url("upload/upload")}',
+            size: 100000,
+            exts: 'jpg|png|jpeg',
+            multiple: true,
+            before: function(obj) {
+                layer.msg('图片上传中...', {
+                    icon: 16,
+                    shade: 0.01,
+                    time: 0
+                })
+            },
+            done: function(res) {
+                layer.close(layer.msg());//关闭上传提示窗口
+                if(res.status == 0) {
+                    return layer.msg(res.message);
+                }
+              /*  var p = $('.pj-picture em').html();
+                p&#45;&#45;;
+                if(p == 0)
+                {
+                    $('#slide-pc').attr('disabled','disabled');
+                }*/
+                //$('#slide-pc-priview').append('<input type="hidden" name="pc_src[]" value="' + res.filepath + '" />');
+                $('#piccs').append('<li class="item_img">' +
+                    '<div class="operate"><i class="toleft layui-icon">' +
+                    '</i><i class="toright layui-icon"></i>' +
+                    '<i  class="close layui-icon"></i>' +
+                    '</div><img  style="width: 90px;height: 90px;"  src="' + res.filepath + '" class="img" >' +
+                    '<input type="hidden" name="piccs[]" value="' + res.filepath + '" /></li>');
+              /*  $('.pj-picture em').html( p );*/
+            }
+        });
+        upload.render({
+            elem: '#bigpic-pc',
+            url: '{:url("upload/upload")}',
+            size: 100000,
+            exts: 'jpg|png|jpeg',
+            multiple: true,
+            before: function(obj) {
+                layer.msg('图片上传中...', {
+                    icon: 16,
+                    shade: 0.01,
+                    time: 0
+                })
+            },
+            done: function(res) {
+                layer.close(layer.msg());//关闭上传提示窗口
+                if(res.status == 0) {
+                    return layer.msg(res.message);
+                }
+              /*  var p = $('.pj-picture em').html();
+                p&#45;&#45;;
+                if(p == 0)
+                {
+                    $('#slide-pc').attr('disabled','disabled');
+                }*/
+                //$('#slide-pc-priview').append('<input type="hidden" name="pc_src[]" value="' + res.filepath + '" />');
+                $('#bigpic').append('<li class="item_img">' +
+                    '<div class="operate"><i class="toleft layui-icon">' +
+                    '</i><i class="toright layui-icon"></i>' +
+                    '<i  class="close layui-icon"></i>' +
+                    '</div><img  style="width: 90px;height: 90px;"  src="' + res.filepath + '" class="img" >' +
+                    '<input type="hidden" name="bigpic[]" value="' + res.filepath + '" /></li>');
+              /*  $('.pj-picture em').html( p );*/
+            }
+        });
+    });
+    //点击多图上传的X,删除当前的图片
+    $("body").on("click",".close",function(){
+       /* var p = $('.pj-picture em').html();*/
+        $(this).closest("li").remove();
+      /*  p++;
+        $('.pj-picture em').html( p );*/
+
+    });
+    //多图上传点击<>左右移动图片
+    $("body").on("click",".pic-more ul li .toleft",function(){
+        var li_index=$(this).closest("li").index();
+        if(li_index>=1){
+            $(this).closest("li").insertBefore($(this).closest("ul").find("li").eq(Number(li_index)-1));
+        }
+    });
+    $("body").on("click",".pic-more ul li .toright",function(){
+        var li_index=$(this).closest("li").index();
+        $(this).closest("li").insertAfter($(this).closest("ul").find("li").eq(Number(li_index)+1));
+    });
+</script>
+

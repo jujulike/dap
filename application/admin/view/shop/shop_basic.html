@@ -1,0 +1,128 @@
+<div class="form-group">
+	<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>账号</label>
+	<div class="col-sm-6">
+		<input type="text" name="nickname" required id="nickname" class="form-control" value="{$item['nickname']}" />
+	</div>
+	<div class="col-sm-4"><p class="help-block">登录账号</p></div>
+	
+</div>
+<div class="form-group">
+	<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>密码</label>
+	<div class="col-sm-6">
+		<input type="password" name="password"  id="password" class="form-control" />
+	</div>
+	<div class="col-sm-4"><p class="help-block">登录密码</p></div>
+	
+</div>
+<div class="form-group">
+	<label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>店铺名称</label>
+	<div class="col-sm-6">
+		<input type="text" name="shopname" required id="shopname" class="form-control" value="{$item['shopname']}" />
+	</div>
+	<div class="col-sm-4"><p class="help-block">用于显示名称</p></div>
+	
+</div>
+<div class="form-group">
+    <label class="col-xs-12 col-sm-3 col-md-2 control-label"><span style='color:red'>*</span>店铺描述</label>
+    <div class="col-sm-6">
+        <input  type="text" name="detail" id="detail" class="form-control" value="{$item['detail']}" />
+    </div>
+    <div class="col-sm-4"><p class="help-block">100字以内</p></div>
+</div>
+
+
+
+
+<div class="form-group">
+    <label class="col-sm-2 control-label">营业执照</label>
+    <button type="button" class="layui-btn layui-btn-primary pull-left" id="license-pc">选择多图</button>
+</div>
+<div class="form-group">
+    <label class="col-sm-2 control-label">图片列表</label>
+    <div class="pic-more">
+     
+        <ul class="pic-more-upload-list" id="license">
+         
+				{volist name="license" id="vo"}
+				<li class="item_img"><div class="operate">
+					<i class="toleft layui-icon"></i>
+					<i class="toright layui-icon"></i>
+					<i  class="close layui-icon"></i></div>
+					<img  src="{$vo}" class="img" style="width: 90px;height: 90px;">
+					<input type="hidden"  name="license[]" value="{$vo}" />
+				</li>
+				{/volist}
+			
+        </ul>
+     
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+<script>
+    layui.use('upload', function(){
+        var $ = layui.jquery;
+        var upload = layui.upload;
+
+        upload.render({
+            elem: '#license-pc',
+            url: '{:url("upload/upload")}',
+            size: 100000,
+            exts: 'jpg|png|jpeg',
+            multiple: true,
+            before: function(obj) {
+                layer.msg('图片上传中...', {
+                    icon: 16,
+                    shade: 0.01,
+                    time: 0
+                })
+            },
+            done: function(res) {
+                layer.close(layer.msg());//关闭上传提示窗口
+                if(res.status == 0) {
+                    return layer.msg(res.message);
+                }
+              /*  var p = $('.pj-picture em').html();
+                p&#45;&#45;;
+                if(p == 0)
+                {
+                    $('#slide-pc').attr('disabled','disabled');
+                }*/
+                //$('#slide-pc-priview').append('<input type="hidden" name="pc_src[]" value="' + res.filepath + '" />');
+                $('#license').append('<li class="item_img">' +
+                    '<div class="operate"><i class="toleft layui-icon">' +
+                    '</i><i class="toright layui-icon"></i>' +
+                    '<i  class="close layui-icon"></i>' +
+                    '</div><img  style="width: 90px;height: 90px;"  src="' + res.filepath + '" class="img" >' +
+                    '<input type="hidden" name="license[]" value="' + res.filepath + '" /></li>');
+              /*  $('.pj-picture em').html( p );*/
+            }
+        });
+    });
+    //点击多图上传的X,删除当前的图片
+    $("body").on("click",".close",function(){
+       /* var p = $('.pj-picture em').html();*/
+        $(this).closest("li").remove();
+      /*  p++;
+        $('.pj-picture em').html( p );*/
+
+    });
+    //多图上传点击<>左右移动图片
+    $("body").on("click",".pic-more ul li .toleft",function(){
+        var li_index=$(this).closest("li").index();
+        if(li_index>=1){
+            $(this).closest("li").insertBefore($(this).closest("ul").find("li").eq(Number(li_index)-1));
+        }
+    });
+    $("body").on("click",".pic-more ul li .toright",function(){
+        var li_index=$(this).closest("li").index();
+        $(this).closest("li").insertAfter($(this).closest("ul").find("li").eq(Number(li_index)+1));
+    });
+</script>
+

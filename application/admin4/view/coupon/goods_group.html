@@ -1,0 +1,57 @@
+<div class="form-group">
+    <label class="col-sm-2 control-label">是否开启团购<span class="check-tips"></span></label>
+    <div class="col-sm-6">
+        <input type="radio" name="is_group" class="i-checks" value="1" {eq name="item['is_group']" value="1"}checked{/eq} >  是
+        <input type="radio" name="is_group" class="i-checks" value="0" {eq name="item['is_group']" value="0"}checked{/eq} > 否
+    </div>
+</div>
+
+
+<div class="form-group">
+	<label class="col-sm-2 control-label">拼团价格</label>
+	<div class="col-sm-6">
+		<div class="input-group">
+			<input type="text" name="groupprice" id="groupprice" class="form-control" value="{$item['groupprice']}" />
+			<span class="input-group-addon">元</span>
+		</div>
+
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-2 control-label">拼团截止日期</label>
+	<div class="col-sm-6">
+		<div class="input-group">
+			<input type="text" name="groupendtime" id="hello" class="form-control layui-input" value="{$item['groupendtime']}" />
+		</div>
+		
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-2 control-label">组团限时</label>
+	<div class="col-sm-6">
+		<div class="input-group">
+			<input type="number" name="grouptime" id="grouptime" min="0" class="form-control" value="{$item['grouptime']}" />
+			<span class="input-group-addon">小时</span>
+		</div>
+		<span class="help-block">组团限时为空则为不参与组团限时</span>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-2 control-label">拼团人数</label>
+	<div class="col-sm-6">
+		<div class="input-group">
+			<input type="number" name="group_num" id="group_num" min="0" class="form-control" value="{$item['group_num']}" />
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-2 control-label">购买拼团次数限制</label>
+	<div class="col-sm-6">
+		<div class="input-group">
+			<input type="number" name="buy_limit" id="buy_limit" min="0" class="form-control" value="{$item['buy_limit']}" />
+			<span class="input-group-addon">件</span>
+		</div>
+		<span class="help-block">个人购买次数限制，默认是0，没有次数限制</span>
+	</div>
+</div>
+

@@ -1,0 +1,85 @@
+{extend name="public/base" /}
+<script src="../../../../../public/ueditor/ueditor.all.js"></script>
+{block name="body"}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox-content">
+                <form action="{:url()}" method="post" class="form-horizontal" enctype="multipart/form-data">
+                    <input type="hidden" name="id" value="{$artype.id|default='0'}">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">上级分类</label>
+                        <div class="col-sm-6">
+                            <select name="pid" class="form-control">
+                                <option value="0" >顶级分类</option>
+                                {volist name="toptype" id="vo"}
+                                <option value="{$vo.id}" {eq name="$artype['pid']" value="$vo['id']" }selected{/eq}>{$vo.type}</option>
+                                {volist name="vo.ptype" id="v"}
+                                <option value="{$v.id}"  {eq name="$artype['pid']" value="$v['id']" }selected{/eq}>__{$v.type}</option>
+                                {/volist}
+                                {/volist}
+                            </select>
+                        </div>
+                        <div class="col-sm-4"><p class="help-block">所属的上级菜单</p></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">名称</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" name="type" value="{$artype.type|default=''}">
+                        </div>
+                        <div class="col-sm-4"><p class="help-block">用于显示名称</p></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">是否单页<span class="check-tips"></span></label>
+                        <div class="col-sm-6" style="padding-top:6px;">
+                            <input type="radio" name="is_foarticle" class="i-checks" value="1" {eq name="$artype['is_foarticle']" value="1"} checked{/eq} >  是
+                            <input type="radio" name="is_foarticle" class="i-checks" value="0" {eq name="$artype['is_foarticle']" value="0"} checked{/eq} > 否
+                            <br />
+                            <p class="help-block" style="padding-top: 10px;">是单页请在下面编辑器编辑图文信息，不可上传文章。</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">图文详情</label>
+                        <div class="col-sm-9">
+                            <textarea id="container" name="t_content" class="">{$artype.t_content|default=''}</textarea>
+
+                            <script type="text/javascript" src="/static/admin/ueditor/ueditor.config.js"></script>
+
+                            <script type="text/javascript" src="/static/admin/ueditor/ueditor.all.js"></script>
+
+                            <script type="text/javascript">
+                                var ue = UE.getEditor('container',{
+                                    initialFrameWidth:"100%",
+                                    initialFrameHeight:500,
+                                    wordCount:false,
+                                    autoHeightEnabled:false,
+                                    autoFloatEnabled:false
+                                });
+                            </script>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-9 col-sm-offset-2">
+
+                            <button class="btn btn-primary ajax-post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+                            <button class="btn btn-default" onclick="javascript:history.back(-1);return false;">返 回</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script type="text/javascript">
+    //导航高亮
+    highlight_subnav('{:url('category/type')}');
+</script>
+
+{/block}

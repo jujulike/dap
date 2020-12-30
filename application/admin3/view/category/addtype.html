@@ -1,0 +1,58 @@
+{extend name="public/base" /}
+<script src="../../../../../public/ueditor/ueditor.all.js"></script>
+{block name="body"}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox-content">
+                <form action="{:url()}" method="post" class="form-horizontal" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">上级分类</label>
+                        <div class="col-sm-6">
+                            <select name="p_id" class="form-control">
+                                <option value="0" >顶级分类</option>
+                                {volist name="toptype" id="vo"}
+                                <option value="{$vo.id}" >{$vo.type}</option>
+                                {volist name="vo.ptype" id="v"}
+                                <option value="{$v.id}" >__{$v.type}</option>
+                                {/volist}
+                                {/volist}
+                            </select>
+                        </div>
+                        <div class="col-sm-4"><p class="help-block">所属的上级菜单</p></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">名称</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" name="type" value="">
+                        </div>
+                        <div class="col-sm-4"><p class="help-block">用于显示名称</p></div>
+                    </div>
+
+
+
+
+
+
+
+                    <div class="form-group">
+                        <div class="col-sm-9 col-sm-offset-2">
+
+                        <button class="btn btn-primary " id="submit" type="submit" target-form="form-horizontal">确 定</button>
+                        <button class="btn btn-default" onclick="javascript:history.back(-1);return false;">返 回</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+    <script type="text/javascript">
+        //导航高亮
+        highlight_subnav('{:url('category/article')}');
+    </script>
+
+{/block}

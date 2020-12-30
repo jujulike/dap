@@ -1,0 +1,101 @@
+{extend name="public/base" /}
+<script src="../../../../../public/ueditor/ueditor.all.js"></script>
+{block name="body"}
+<script src="__PUBLIC__/admin/js/jquery-2.1.1.min.js"></script>
+<script src="__PUBLIC__/home/layui/layui.js"></script>
+<link href="__PUBLIC__/home/layui/css/layui.css" rel="stylesheet">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox-content">
+                <form action="{:url()}" method="post" class="form-horizontal" enctype="multipart/form-data">
+                <input type="hidden" name="sid" value="{$item.sid|default='0'}">
+                <div class="panel-body">
+                    <ul class="nav nav-tabs" id="myTab">
+                        <li class="active" ><a href="#tab_basic">基本信息</a></li>
+                        <li><a href="#tab_des">联系人信息</a></li>
+                        <li><a href="#tab_img">店铺设置</a></li>
+                        
+                        
+                    </ul>
+                    <div class="tab-content" style="margin-top: 15px;">
+                        
+                        <div class="tab-pane  active" id="tab_basic">{include file="shop:shop_basic" /}</div>
+                        <div class="tab-pane" id="tab_des">{include file="shop:shop_des" /}</div>
+                        <div class="tab-pane" id="tab_img">{include file="shop:shop_img" /}</div>
+                        
+
+                      
+                        
+                    </div>
+                </div>
+                <div class="form-group">
+                        <div class="col-sm-9 col-sm-offset-2">
+
+                        <button class="btn btn-primary " id="submit" type="submit" target-form="form-horizontal">确 定</button>
+                        <button class="btn btn-default" onclick="javascript:history.back(-1);return false;">返 回</button>
+                        </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script type="text/javascript">
+    layui.use('laydate', function(){
+      var laydate = layui.laydate;
+      
+      //执行一个laydate实例
+      laydate.render({
+        elem: '#hello' //指定元素
+        ,type: 'datetime'
+        ,min:"<?php echo date('Y-m-d H:i:s');?>"
+      });
+    });
+        //导航高亮
+        highlight_subnav("{:url('index')}");
+        $(function () {
+            window.optionchanged = false;
+            $('#myTab a').click(function (e) {
+                e.preventDefault();//阻止a链接的跳转行为
+                $(this).tab('show');//显示当前选中的链接及关联的content
+            })
+        });
+    
+</script>
+<script>
+            var i =0;
+            $(function(){
+                i = $("#attrTable tbody").find("tr").length;
+            })
+            var attrHtml = '<tr>\
+                            <td><a href="javascript:;" onclick="delLevel(this)">[-]条件##</a></td>\
+                            <td><input type="text" class="form-control" name="rebate[##][title]"/></td>\
+                            <td><input type="text" class="form-control" name="rebate[##][price]"/></td>\
+                            <td><input type="text" class="form-control" name="rebate[##][groupprice]"/></td>\
+                            <td><input type="text" class="form-control" name="rebate[##][total]"/></td>\
+                            <td><input type="text" class="form-control" name="rebate[##][weight]"/></td>\
+                            </tr>';
+            function addLevel(){
+                ++i;
+                $("#attrTable tbody").append(attrHtml.replace(/##/g, i));
+            }
+            function delLevel(obj,option_id){
+                var num = $(obj).parent().parent().index() + 1;
+                var all = $("#attrTable tbody tr").length;
+                if(option_id>0){
+                    $.post("{:url('deloption')}",{option_id:option_id},function(s){
+                        
+                    })
+                }
+                i--;
+                $(obj).parent().parent().remove();
+                    
+            }
+</script>
+
+
+{/block}

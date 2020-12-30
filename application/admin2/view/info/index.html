@@ -1,0 +1,90 @@
+{extend name="public/base" /}
+<script src="../../../../../public/ueditor/ueditor.all.js"></script>
+{block name="body"}
+<script src="__PUBLIC__/admin/js/jquery-2.1.1.min.js"></script>
+<script src="__PUBLIC__/home/layui/layui.js"></script>
+<link href="__PUBLIC__/home/layui/css/layui.css" rel="stylesheet">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox-content">
+                <form action="{:url()}" method="post" class="form-horizontal" enctype="multipart/form-data">
+                <input type="hidden" name="id" value="{$item.id|default='0'}">
+                <div class="panel-body">
+                    <ul class="nav nav-tabs" id="myTab">
+                        <li class="active" ><a href="#tab_basic">基本信息配置</a></li>
+                        <li><a href="#tab_score">积分配置</a></li>
+                        <li><a href="#tab_topup">充值配置</a></li>
+                        <li><a href="#tab_label">评论标签配置</a></li>
+                        <li><a href="#tab_refund">退款原因配置</a></li>
+                    </ul>
+                    <div class="tab-content" style="margin-top: 15px;">
+                        <div class="tab-pane  active" id="tab_basic">{include file="Info:tab_basic" /}</div>
+                        <div class="tab-pane" id="tab_score">{include file="Info:tab_score" /}</div>
+                        <div class="tab-pane" id="tab_topup">{include file="Info:tab_topup" /}</div>
+                        <div class="tab-pane" id="tab_label">{include file="Info:tab_label" /}</div>
+                        <div class="tab-pane" id="tab_refund">{include file="Info:tab_refund" /}</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                        <div class="col-sm-9 col-sm-offset-2">
+
+                        <button class="btn btn-primary " id="submit" type="submit" target-form="form-horizontal">确 定</button>
+                        </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script type="text/javascript" src="/static/admin/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="/static/admin/ueditor/ueditor.all.js"></script>
+<script>
+            var i =0;
+            $(function(){
+                i = $("#attrTable tbody").find("tr").length;
+            })
+            var attrHtml = '<tr>\
+                            <td><a href="javascript:;" onclick="delLevel(this)">[-]原因##</a></td>\
+                            <td><input type="text" class="form-control" name="rebate[][name]"/></td>\
+                            </tr>';
+            function addLevel(){
+                ++i;
+                $("#attrTable tbody").append(attrHtml.replace(/##/g, i));
+            }
+            function delLevel(obj){
+                var num = $(obj).parent().parent().index() + 1;
+                var all = $("#attrTable tbody tr").length;
+                i--;
+                $(obj).parent().parent().remove();
+                    
+            }
+</script>
+<script type="text/javascript">
+    var ue = UE.getEditor('jfcontent',{
+        initialFrameWidth:"100%",
+        initialFrameHeight:500,
+        wordCount:false,
+        autoHeightEnabled:false,
+        autoFloatEnabled:false
+    });
+    var ues = UE.getEditor('content',{
+        initialFrameWidth:"100%",
+        initialFrameHeight:500,
+        wordCount:false,
+        autoHeightEnabled:false,
+        autoFloatEnabled:false
+    });
+$(function () {
+    window.optionchanged = false;
+    $('#myTab a').click(function (e) {
+        e.preventDefault();//阻止a链接的跳转行为
+        $(this).tab('show');//显示当前选中的链接及关联的content
+    })
+});                  
+</script>
+
+{/block}

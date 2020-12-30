@@ -1,0 +1,166 @@
+{extend name="public/base" /}
+
+{block name="body"}
+<div class="wrapper wrapper-content animated fadeInRight">
+	<div class="row">
+		<div class="col-lg-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">筛选</div>
+                <div class="panel-body">
+                    <form method="get" action="{:url('')}" class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">真实姓名</label>
+                            <div class="col-sm-2">
+                                <input type="text" name="name" class="form-control" value="{:input('name')}">
+                            </div>
+                            <label class="col-sm-2 control-label">手机号</label>
+                            <div class="col-sm-2">
+                                <input type="text" name="mobile" class="form-control" value="{:input('mobile')}">
+                            </div>
+                          
+							
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">昵称</label>
+                            <div class="col-sm-2">
+                                <input type="text" name="nickname" class="form-control" value="{:input('nickname')}">
+                            </div>
+                       
+							 <div class="col-sm-2">
+								<input type="hidden" name="types" value="{$types}">
+                                <input type="hidden" name="isorder" value="{$isorder}">
+                                <button class="btn btn-default" type="submit">搜索</button>
+								<!-- <button class="btn btn-warning" type="submit" name="btns" value="explode">导出订单</button> -->
+                            </div>
+                        </div>
+                        <div class="form-group"></div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 数据列表 -->
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+					<div class="panel-body">
+                        <ul class="nav nav-tabs" id="myTab">
+                            <!--<li {if $types==0}class="active"{/if}><a href="{:url('Reserve_order/index')}">全部</a></li>-->
+                            <li {if $types!=2}class="active"{/if}><a href="{:url('myuser/index',array('typa'=>1))}">普通会员</a></li>
+                            <li {if $types==2}class="active"{/if}><a href="{:url('myuser/index',array('typa'=>2))}">核销员</a></li>
+                           
+                        </ul>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped add_tableimg2_table">
+                            <thead>
+                                <tr>
+                                    <th class="i-checks checks-some" style="width: 20px;"><input type="checkbox" ></th>
+                                    <th class="">UID {if $isorder==1}<a href="{:url('index',['isorder'=>0])}" class="fa fa-circle-o"></a>{else}<a href="{:url('index',['isorder'=>0])}" class="fa fa-circle"></a>{/if}
+                                    </th>
+									<th>真实姓名</th>
+                                    <th class="">昵称</th>
+                                    <th class="">手机号</th>
+                                    <th class="">性别</th>
+                                    <th class="">生日</th>
+                                    
+                                    <th class="">订单数</th>
+                                    <th class="">购物金额</th>
+                                    <th class="">最近下单时间</th>
+                                    <th class="">状态</th>
+                                    <th class="" >注册时间</th>
+                                    <th class="" >标签</th>
+									<!-- <th class="">余额 {if $isorder==1}<a href="{:url('index',['isorder'=>1])}" class="fa fa-circle"></a>{else}<a href="{:url('index',['isorder'=>1])}" class="fa fa-circle-o"></a>{/if} -->
+                                    <!-- </th> -->
+									<!-- <th class="">积分</th>
+                                   
+                                    <th style="width: 10%;">地址</th> -->
+                                  
+                                    <th class="" style="width: 100px; text-align: right;">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {notempty name="list"}
+                                {volist name="list" id="vo"}
+                                <tr>
+                                    <td class="i-checks checks-block ids"><input type="checkbox" name="id[]" value="{$vo.uid}"></td>
+                                    <td>{$vo.uid} </td>
+                                    <td><span>{$vo.realname|default="暂未填写"}</span></td>
+                                    <td>{$vo.nickname}</td>
+									<td><span>{$vo.mobile|default="暂未填写"}</span></td>
+                                    <td><span>{if($vo['sex']==1)}男{else/}女{/if}</span></td>
+                                    <td><span>{$vo.birthday}</span></td>
+                                    <td><span>{$vo.count}</span></td>
+                                    <td><span>{$vo.totalprice}</span></td>
+                                    <td><span>{$vo.order_addtime}</span></td>
+                                    <td><span>正常</span></td>
+                                    <td><span>{if ($vo.addtime)}{$vo.addtime|time_format}{/if}</span></td>
+                                    <td><span>
+                                        <select onchange="set_level(this.value,{$vo.uid})">
+                                            <option  value="">--选择标签--</option>
+                                            {volist name="level_list" id="vo1"}
+                                            <option {if($vo['level']==$vo1['id'])}selected{/if} value="{$vo1.id}">{$vo1.name}</option>
+                                            {/volist}
+                                         
+                                        </select>
+                                  </span></td>
+									
+                                    <!--<td>{$vo.status_text}</td>-->
+                                    <td style=" text-align: right;">
+									<!--{eq name="vo.status" value="1"}
+                                        <a href="{:url('Myuser/changeStatus?method=forbidUser&id='.$vo['uid'])}" class="ajax-get">禁用</a>
+                                        {else/}
+                                        <a href="{:url('Myuser/changeStatus?method=resumeUser&id='.$vo['uid'])}" class="ajax-get">启用</a>
+                                        {/eq}-->
+                                        <a href="{:url('myuser/info',['uid'=>$vo.uid])}" >详情</a>
+										
+                                    </td>
+                                </tr>
+                                {/volist}
+                                {else/}
+                                <td colspan="7" class="text-center"> aOh! 暂时还没有内容! </td>
+                                {/notempty}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- 分页-->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            {$_page}
+                        </div>
+                    </div>
+                    <!-- 分页 - 结束 -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+	
+<script type="text/javascript">
+function set_level(values,uid){
+    $.post("{:url('set_level')}",{uid:uid,level:values}
+        );
+}
+
+    //导航高亮
+    highlight_subnav('{:url('myuser/index')}');
+	//状态修改
+    function setProperty(obj,id,type){
+        $(obj).html($(obj).html() + "...");
+        $.post("{:url('Myuser/setpropertya?model=user')}",{id:id,type:type, data: obj.getAttribute("data"),attrid:2,sta:1}
+            ,function(d){
+                $(obj).html($(obj).html().replace("...",""));
+                if(type=='istype'){
+                 $(obj).html( d.data=='1'?'已是核销员':'待成为核销员');
+                }
+                $(obj).attr("data",d.data);
+                if(d.result==1){
+                    $(obj).toggleClass("label-info");
+                }
+            }
+            ,"json"
+        );
+    }
+</script>
+{/block}

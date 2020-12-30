@@ -1,0 +1,240 @@
+{extend name="public/base" /}
+{block name="body"}
+<script src="__PUBLIC__/admin/js/jquery-2.1.1.min.js"></script>
+<script src="__PUBLIC__/home/layui/layui.js"></script>
+<link href="__PUBLIC__/home/layui/css/layui.css" rel="stylesheet">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <style type="text/css">
+    .main .form-horizontal .form-group{margin-bottom:0;}
+    #modal-confirmsend .form-group{margin-bottom:15px;display: flex;}
+    #modal-confirmsend .control-label{margin-top:0;}
+</style>
+
+<div class="main">
+    
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                订单信息
+            </div>
+            <div class="panel-body">
+                
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">价钱 :</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <p class="form-control-static">{$item['price']} 元 （商品: {$item['goodsprice']} 元 运费: {$item['mailprice']} 元 优惠券: {$item['price']-$item['goodsprice']} 元)</p>
+                    </div>
+                </div>
+               
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">配送方式 :</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <p class="form-control-static">{if $item['is_dispatch']==1}自提{else}在线发货{/if}</p>
+                    </div>
+                </div>
+                {if $item['is_dispatch']==1}
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">验证码 :</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <p class="form-control-static">{$item['order_code']}</p>
+                    </div>
+                </div>
+                {else}
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">快递单号 :</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <p class="form-control-static">{$item['expresssn']}</p>
+                    </div>
+                </div>
+                {/if}
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">付款方式 :</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <p class="form-control-static">
+                            {if $item['pay_type'] == 1}微信支付{else}余额支付{/if}
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">订单状态 :</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <p class="form-control-static">
+                            {if $item['sent'] == 0}<span class="label label-info">未付款</span>{/if}
+                            {if $item['sent'] == 1}<span class="label label-info">待发货</span>{/if}
+                            {if $item['sent'] == 2}<span class="label label-info">待收货</span>{/if}
+                            {if $item['sent']>2}<span class="label label-success">已完成</span>{/if}
+                            {if $item['sent'] == -1}
+                                {if $item['isrefund'] ==1}
+                                <span class="label label-danger">已退款</span>
+                                {else}
+                                <span class="label label-danger">未退款</span>
+                                {/if}
+                            {/if}
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">下单日期 :</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <p class="form-control-static">{$item.addtime|date="Y-m-d H:i",###}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {if $item['is_dispatch']==0}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                用户信息
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">姓名 :</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <p class="form-control-static">{$addr[0]}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">手机 :</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <p class="form-control-static">{$addr[1]}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">地址 :</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <p class="form-control-static">{$addr[2]}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {/if}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                商品信息
+            </div>
+            <div class="panel-body table-responsive">
+                <table class="table table-hover">
+                    <thead class="navbar-inner">
+                    <tr>
+                        <th style="width:5%;">ID</th>
+                        <th style="width:10%;">商品名称</th>
+                        <th style="width:10%;">属性</th>
+                        <th style="width:10%;color:red;">商品价格</th>
+                        <th style="width:5%;">数量</th>
+                    </tr>
+                    </thead>
+                    {volist name="goods" id="good"}
+                    <tr>
+                        <td>{$good['id']}</td>
+                        <td>{$good['title']}</td>
+                        <td><span class="label label-info">{$goods['name']}</span></td>
+                        <td style='color:red;font-weight:bold;'>{$good['price']}</td>
+                        <td>{$good['num']}</td>
+                    </tr>
+                    {/volist}
+                    <tr>
+                        <td colspan="10" class="text-right">
+
+                        {if $item['sent']==-1}
+                            {if $item['isrefund'] ==0}
+                            <a href="{:url('orderrefund',['id'=>$item['id']])}" class="btn btn-primary" onclick="return confirm('确认退款此订单吗？'); return false;">确认退款</a>
+                            {/if}
+                        {else}
+                            <!-- {if empty($item['sent'])}
+                                <a href="{:url('order_sent',['op'=>'confrimpay','id'=>$item['id']])}" class="btn btn-primary" onclick="return confirm('确认付款此订单吗？'); return false;">确认付款</a>
+                            {/if} -->
+                            {if $item['is_dispatch']==1}
+                                {if $item['sent'] == 1}
+                                <a href="{:url('order_sent',['op'=>'finish','id'=>$item['id']])}" class="btn btn-primary" onclick="return confirm('确认操作此订单吗？'); return false;">确认自提</a>
+                                {/if}
+                            {else}
+                                {if $item['sent'] == 1}
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-confirmsend">确认发货</button>
+                                {elseif $item['sent'] == 2}
+                                <a class="btn btn-danger confirm ajax-get" href="{:url('order_sent',['op'=>'close','id'=>$item['id']])}">取消发货</a>
+                                {/if}
+                                {if $item['sent'] <3 && $item['sent']>0}
+                                <a href="{:url('order_sent',['op'=>'finish','id'=>$item['id']])}" class="btn btn-success" onclick="return confirm('确认完成此订单吗？');">完成订单</a>
+                                {/if}
+                            {/if}
+                            
+
+                        {/if}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        
+        <!-- 确认发货 -->
+        <div id="modal-confirmsend" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="width:600px;margin:0px auto;">
+            <form class="form-horizontal form" action="" method="post" enctype="multipart/form-data">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                        <h3>快递信息</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-3 col-md-2 control-label">快递公司</label>
+                            <div class="col-sm-9 col-xs-12">
+                                <select class="form-control" name="express" id="express" required>
+                                    <option value="其他快递" data-name="其他快递">其他快递</option>
+                                    <option value="顺丰" data-name="顺丰">顺丰</option>
+                                    <option value="申通" data-name="申通">申通</option>
+                                    <option value="韵达快运" data-name="韵达快运">韵达快运</option>
+                                    <option value="天天快递" data-name="天天快递">天天快递</option>
+                                    <option value="圆通速递" data-name="圆通速递">圆通速递</option>
+                                    <option value="中通速递" data-name="中通速递">中通速递</option>
+                                    <option value="ems快递" data-name="ems快递">ems快递</option>
+                                    <option value="宅急送" data-name="宅急送">宅急送</option>
+                                    <option value="德邦物流" data-name="德邦物流">德邦物流</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-3 col-md-2 control-label">快递单号</label>
+                            <div class="col-sm-9 col-xs-12">
+                                <input type="text" name="expresssn" required class="form-control" />
+                            </div>
+                        </div>
+                        <div id="module-menus"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="id" value="{$item.id}">
+                        <button type="submit" class="btn btn-primary" target-form="form-horizontal">确认发货</button>
+                        <a href="#" class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</a>
+                    </div>
+                </div>
+            </div>
+            </form>
+        </div>
+
+    
+</div>
+
+</div>
+
+
+
+
+{/block}
+
+{block name="script"}
+<script type="text/javascript">
+    //导航高亮
+    highlight_subnav('{:url('Score/order')}');
+    $(function(){
+        {if !empty($express)}
+            $("#express").find("option[data-name='{$express['express_name']}']").attr("selected",true);
+            $("#expresscom").val($("#express").find("option:selected").attr("data-name"));
+            {/if}
+                $("#express").change(function(){
+                    var obj = $(this);
+                    var sel = obj.find("option:selected").attr("data-name");
+                    $("#expresscom").val(sel);
+                });
+    });
+</script>
+{/block}

@@ -1,0 +1,20 @@
+<div class="form-group">
+                        <label class="col-sm-2 control-label">图文详情</label>
+                        <div class="col-sm-9">
+                            <textarea id="container" name="content" class="">{$item.content|default=''}</textarea>
+
+                            <script type="text/javascript" src="/static/admin/ueditor/ueditor.config.js"></script>
+
+                            <script type="text/javascript" src="/static/admin/ueditor/ueditor.all.js"></script>
+
+                            <script type="text/javascript">
+                                var ue = UE.getEditor('container',{
+                                    initialFrameWidth:"100%",
+                                    initialFrameHeight:500,
+                                    wordCount:false,
+                                    autoHeightEnabled:false,
+                                    autoFloatEnabled:false
+                                });
+                            </script>
+                        </div>
+                    </div>

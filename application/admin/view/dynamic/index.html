@@ -1,0 +1,130 @@
+{extend name="public/base" /}
+
+{block name="body"}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="mail-box-header">
+			 <div class="btn-group add-offsetRight">
+                    <div class="input-group inline">
+                        <a href="{:url('Dynamic/add')}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> 添加</a>
+						<a class="btn btn-sm btn-danger add-offsetLeft ajax-post confirm" url="{:url('Dynamic/changeSent?method=deletedata&model=dynamic\')}" target-form="ids"><i class="fa fa-trash-o"></i> 删除</a>
+                    </div>
+                </div>
+                <!-- 表操作集合-->
+                <div class="mail-tools tooltip-demo">
+
+                    <div class="btn-group pull-right">
+                        <form method="get" action="{:url('')}" class="pull-right mail-search">
+                            <div class="input-group">
+                                <input type="text" class="form-control input-sm" name="title" value="{:input('title')}"  placeholder="请输入动态标题">
+                                <div class="input-group-btn add_js_group2">
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    
+
+
+
+                    <div class="clearfix"></div>
+
+                </div>
+                <!-- 表操作集合 - 结束-->
+            </div>
+
+
+            <!-- 数据列表 -->
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <table class="table table-striped add_tableimg2_table">
+                            <thead>
+                            <tr>
+                                <th class="i-checks checks-some" width="25"><input type="checkbox" ></th>
+                                <th width="160" class="">id</th>
+                                <th class="">标题</th>
+                               
+                                <th class="">排序</th>
+                                <!--<th class="">图片</th>-->
+								<th class="">分类</th>
+								<th class="">状态</th>
+                                <th class="">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {notempty name="_list"}
+                            {volist name="_list" id="vo"}
+                            <tr>
+                                <td class="i-checks checks-block ids"><input type="checkbox" name="id[]" value="{$vo.id}"></td>
+                               <td>{$vo.id} </td>
+								<td>{$vo.title} </td>
+								<td>{$vo.sort} </td>
+								<!--<td><img src="{$vo.pic}" style="width:30%;"/> </td>-->
+                                
+								<td> {volist name="dycate" id="vb"}{if $vo.type==$vb.id}{$vb.name}{/if}{/volist}</td>
+								<td>
+                                        <span data="{$vo['is_show']}" class="label label-default {eq name="vo.is_show" value="1"}label-info{/eq} " onclick="setProperty(this,{$vo['id']},'is_show')"> {eq name="vo.is_show" value="1"}上架{else/}下架{/eq}</span>
+                                    </td>
+                                <td>
+                                  <a href="{:url('Dynamic/add',['id'=>$vo.id])}">编辑</a>
+								  <a href="{:url('Dynamic/changeSent?method=deletedata&model=dynamic&id='.$vo['id'])}" class="confirm ajax-get">删除</a>
+                                 <!--<a style="color: red;" href="{:url('Dynamic/delm',['id'=>$vo.id])}" class="confirm">删除</a>-->
+                                     
+                                </td>
+                            </tr>
+                            {/volist}
+                            {else/}
+                            <td colspan="9" class="text-center"> aOh! 暂时还没有内容! </td>
+                            {/notempty}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- 分页-->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            {$_page}
+                        </div>
+                    </div>
+                    <!-- 分页 - 结束 -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{/block}
+
+{block name="script"}
+
+<script type="text/javascript">
+    //导航高亮
+    highlight_subnav('{:url('Order/index')}');
+
+    $('.dztitle em,.inpbtn i').click(function(){
+        $('#order_id').attr('value',0);
+        $("#pagetypelist").empty();
+        $('.bgdd').fadeOut();
+    })
+
+    //状态修改
+    function setProperty(obj,id,type){
+        $(obj).html($(obj).html() + "...");
+        $.post("{:url('Dynamic/setproperty?model=dynamic')}",{id:id,type:type, data: obj.getAttribute("data"),attrid:2,sta:1}
+            ,function(d){
+                $(obj).html($(obj).html().replace("...",""));
+                if(type=='is_show'){
+                 $(obj).html( d.data=='1'?'上架':'下架');
+                }
+                $(obj).attr("data",d.data);
+                if(d.result==1){
+                    $(obj).toggleClass("label-info");
+                }
+            }
+            ,"json"
+        );
+    }
+</script>
+{/block}

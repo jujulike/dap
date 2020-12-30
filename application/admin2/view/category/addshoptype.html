@@ -1,0 +1,138 @@
+{extend name="public/base" /}
+<script src="../../../../../public/ueditor/ueditor.all.js"></script>
+{block name="body"}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox-content">
+                <form action="{:url()}" method="post" class="form-horizontal" enctype="multipart/form-data">
+<input type="hidden" name="cat_id" value="{$category.cat_id|default='0'}">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">上级菜单</label>
+                        <div class="col-sm-6">
+                            <select name="parent_id" class="form-control">
+                                <option value="0" {if $category['parent_id']==0} selected{/if}>顶级分类</option>
+                                {volist name="toptype" id="vo"}
+                                <option value="{$vo.cat_id}" {eq name="$category['parent_id']" value="$vo['cat_id']"}selected{/eq}>{$vo.cat_name}</option>
+                                {if($vo.cate)}
+                                {volist name="$vo.cate" id="av"}
+                                <option value="{$av.cat_id}" {eq name="$category['parent_id']" value="$av['cat_id']"}selected{/eq}>——{$av.cat_name}</option>
+                                {if($av.cate)}
+                                {volist name="$av.cate" id="bv"}
+                                <option value="{$bv.cat_id}" {eq name="$category['parent_id']" value="$bv['cat_id']"}selected{/eq}>————{$bv.cat_name}</option>
+                                {if($bv.cate)}
+                                {volist name="$bv.cate" id="cv"}
+                                <option value="{$cv.cat_id}" {eq name="$category['parent_id']" value="$cv['cat_id']"}selected{/eq}>——————{$cv.cat_name}</option>
+                                {/volist}
+                                {/if}
+                                {/volist}
+                                {/if}
+                                {/volist}
+                                {/if}
+                                {/volist}
+                            </select>
+                        </div>
+                        <div class="col-sm-4"><p class="help-block">所属的上级菜单</p></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">名称</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" name="cat_name" value="{$category.cat_name|default=''}">
+                        </div>
+                        <div class="col-sm-4"><p class="help-block">用于显示名称</p></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">链接</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" name="index_dwt_file" value="{$category.index_dwt_file|default=''}">
+                        </div>
+                        <div class="col-sm-4"><p class="help-block">U函数解析的URL或者外链</p></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">关键词</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" name="keywords" value="{$category.keywords|default=''}">
+                        </div>
+                        <div class="col-sm-4"><p class="help-block">用于检索，用逗号隔开</p></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">排序</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" name="sort_order" value="{$category.sort_order|default=0}">
+                        </div>
+                        <div class="col-sm-4"><p class="help-block">用于分组显示的顺序</p></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">是否显示<span class="check-tips"></span></label>
+                        <div class="col-sm-6">
+                            <input type="radio" name="is_show" class="i-checks" value="1" {eq name="category['is_show']" value="1"}checked{/eq} >  是
+                            <input type="radio" name="is_show" class="i-checks" value="0" {eq name="category['is_show']" value="0"}checked{/eq} > 否
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">说明</label>
+                        <div class="col-sm-6">
+                            <input type="textarea" class="form-control" name="cat_desc" value="{$category.cat_desc|default=''}">
+                        </div>
+                        <div class="col-sm-4"><p class="help-block">分类详细说明</p></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">分类图片</label>
+                        <div class="col-sm-6">
+                            <img id="showhead" src="{$category.type_img|default='/static/admin/img/addbg2.png'}" style="max-height: 100px;max-width: 100px;">
+                            <input type="file" name="file" id="file_head" style="display: none">
+                        </div>
+                        <div class="col-sm-4"><p class="help-block">用于顶级菜单显示</p></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-9 col-sm-offset-2">
+
+                        <button class="btn btn-primary " id="submit" type="submit" target-form="form-horizontal">确 定</button>
+                        <button class="btn btn-default" onclick="javascript:history.back(-1);return false;">返 回</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+    <script type="text/javascript">
+        //导航高亮
+        highlight_subnav("{:url('category/shop')}");
+    </script>
+<script type="text/javascript">
+    $(function(){
+        $("#file_head").on('change',function(){
+
+            var objUrl = getObjectURL(this.files[0]) ;
+            console.log("objUrl = "+objUrl) ;
+            console.log(this.files[0]) ;
+            /*var formData = this.files[0];*/
+            if (objUrl) {
+                $("#showhead").attr("src", objUrl) ;
+            }
+        });
+        $("#showhead").click(function(){
+            $("#file_head").click();
+        });
+    });
+    //建立一個可存取到該file的url
+    function getObjectURL(file) {
+        var url = null ;
+        if (window.createObjectURL!=undefined) { // basic
+            url = window.createObjectURL(file) ;
+        } else if (window.URL!=undefined) { // mozilla(firefox)
+            url = window.URL.createObjectURL(file) ;
+        } else if (window.webkitURL!=undefined) { // webkit or chrome
+            url = window.webkitURL.createObjectURL(file) ;
+        }
+        return url ;
+    }
+</script>
+{/block}

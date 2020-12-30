@@ -1,0 +1,66 @@
+<?php
+header("Content-Type:   application/msword");
+header("Content-Disposition:   attachment;   filename=".$title.".xls"); //指定文件名称
+header("Pragma:   no-cache");
+header("Expires:   0");
+?>
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+      xmlns:o="urn:schemas-microsoft-com:office:office"
+      xmlns:w="urn:schemas-microsoft-com:office:word"
+      xmlns:m="http://schemas.microsoft.com/office/2004/12/omml"
+      xmlns="http://www.w3.org/TR/REC-html40">
+<html dir="ltr" lang="cn">
+<head>
+    <meta charset="UTF-8" />
+    <title>用户信息</title>
+    <style media="print" type="text/css">.noprint{display:none}</style>
+    <style type="text/css">
+
+        .STYLE1 {
+            font-size: 30px;
+            font-weight: bold;
+            color: #FF0000;
+        }
+        .STYLE2 {color: #FF0000}
+        .STYLE3 {font-size: 12px}
+        .STYLE4 {color: #FF0000; font-size: 12px; }
+        .STYLE5 {font-size: 12}
+
+    </style>
+</head>
+<body>
+
+
+
+
+
+<table class="table table-bordered" width="580" border="1" align="center" cellpadding="0" cellspacing="0">
+    <tr>
+        <td colspan="9"><div align="center" class="STYLE1">用户信息表</div></td>
+    </tr>
+
+    <tr>
+        <td class="">id</th>
+        <td class="">用户名</th>
+        <td class="">真实姓名</th>
+        <td class="">证件号</th>
+        <td class="">手机号</th>
+    </tr>
+    <tbody>
+    {notempty name="list"}
+    {volist name="list" id="vo"}
+    <tr>
+        <td>{$vo.uid}</td>
+        <td>{$vo.nickname}</td>
+        <td>{$vo.realname|default='暂未填写'}</td>
+        <td>{$vo.cardid|default='暂未填写'}</td>
+        <td>{$vo.phone}</td>
+
+    </tr>
+    {/volist}
+    {else/}
+    <td colspan="10" class="text-center"> aOh! 暂时还没有内容! </td>
+    {/notempty}
+</table>
+</body>
+</html>

@@ -1,0 +1,75 @@
+{extend name="public/base" /}
+
+{block name="body"}
+<div class="wrapper wrapper-content animated fadeInRight">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="mail-box-header">
+				<div class="mail-tools tooltip-demo">
+					<div class="btn-group add-offsetRight">
+						<div class="input-group inline">
+							{volist name="Think.config.config_group_list" id="group"}
+							<a href="{:url('?id='.$key)}" class="btn {neq name="id" value="$key"}btn-outline{/neq} btn-info add-offsetRight">{$group}配置</a>
+							{/volist}
+						</div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+			</div>
+
+			<div class="ibox-content">
+				<form action="{:url('save')}" method="post" class="form-horizontal">
+					{volist name="list" id="config"}
+					<div class="form-group">
+						<label class="col-sm-2 control-label">{$config.title}</label>
+						<div class="col-sm-6">
+						{switch name="config.type"}
+						{case value="0"}
+						<input type="text" class="form-control" name="config[{$config.name}]" value="{$config.value}">
+						{/case}
+						{case value="1"}
+						<input type="text" class="form-control" name="config[{$config.name}]" value="{$config.value}">
+						{/case}
+						{case value="2"}
+							<textarea class="form-control" name="config[{$config.name}]">{$config.value}</textarea>
+						{/case}
+						{case value="3"}
+							<textarea class="form-control" name="config[{$config.name}]">{$config.value}</textarea>
+						{/case}
+						{case value="4"}
+						<select name="config[{$config.name}]" class="form-control">
+							{volist name=":parse_config_attr($config['extra'])" id="vo"}
+								<option value="{$key}" {eq name="config.value" value="$key"}selected{/eq}>{$vo}</option>
+							{/volist}
+						</select>
+						{/case}
+						{/switch}
+						</div>
+						<div class="col-sm-4"><p class="help-block">{$config.remark}</p></div>
+					</div>
+					{/volist}
+
+					<div class="form-group">
+						<div class="col-sm-9 col-sm-offset-2">
+							{empty name="list"}
+							<button type="submit" disabled class="btn btn-primary disabled" target-form="form-horizontal">确 定</button>
+							{else/}
+							<button type="submit" class="btn btn-primary ajax-post" target-form="form-horizontal">确 定</button>
+							{/empty}
+							<button class="btn btn-default" onclick="javascript:history.back(-1);return false;">返 回</button>
+						</div>
+					</div>
+				</form>
+			</div>
+
+		</div>
+	</div>
+</div>
+{/block}
+
+{block name="script"}
+<script>
+	//导航高亮
+	highlight_subnav('{:url('group')}');
+</script>
+{/block}

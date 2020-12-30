@@ -1,0 +1,173 @@
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.2"></script>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		基本信息
+	</div>
+	<div class="panel-body">
+<div class="form-group"style="margin-top: 10px;">
+	<label class=" col-md-2 control-label">
+		<span style='color:red'>*</span>线路名称</label>
+	<div class="col-sm-6">
+		<input type="text" name="name" required id="goodsname" class="form-control" value="{$item['name']}" />
+	</div>
+	<div class="col-sm-4"><p class="help-block">用于显示名称</p></div>
+	
+</div>
+<div class="form-group">
+    <label class=" col-md-2 control-label">
+		<span style='color:red'>*</span>托运站</label>
+    <div class="col-sm-6">
+        <input  type="text" name="tyz" id="detail" class="form-control" value="{$item['tyz']}" />
+    </div>
+    <div class="col-sm-4"><p class="help-block">托运站名称</p></div>
+</div>
+<div class="form-group">
+			<label class=" col-md-2 control-label">
+				<span style='color:red'>*</span>编号</label>
+			<div class="col-sm-6">
+				<input  type="text" name="bianhao" id="bianhao" class="form-control" value="{$item['bianhao']}" />
+			</div>
+			<div class="col-sm-4"><p class="help-block">编号</p></div>
+		</div>
+
+
+ <div class="form-group">
+    <label class="col-md-2 control-label">是否启用<span class="check-tips"></span></label>
+    <div class="col-sm-6">
+        <input type="radio" name="status" class="i-checks" value="1" {eq name="item['status']" value="1"}checked{/eq} >  是
+        <input type="radio" name="status" class="i-checks" value="0" {eq name="item['status']" value="0"}checked{/eq} > 否
+    </div>
+</div>
+<div class="form-group">
+	<label class="col-md-2 control-label">排序</label>
+	<div class="col-sm-6">
+		<input type="text" name="sorts" class="form-control" value="{$item['sorts']|default='1'}" />
+	</div>
+</div>
+	</div>
+</div>
+<hr>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		配送范围
+	</div>
+	<div class="panel-body">
+		<input type="hidden" name="jwd" id="infopx" value="{$item['jwd']}">
+		<input type="hidden" name="fanw" id="infoaddress" value="{$item['fanw']}">
+        <input type="hidden" id="infopoint" value='{$item["points"]}'>
+		<div id="info">
+        {volist name="item.area" id="v"}
+        <div class="col-sm-9 col-xs-12">{$v}</div>
+         {/volist}
+		</div>
+
+		<div class="form-group">
+			<div class="col-sm-9 ">
+            {if($item)}
+				<input class="btn btn-primary " id="startBtn" type="button" onclick="startTool();" value="重新选择区域" >
+                {else}
+                <input class="btn btn-primary " id="startBtn" type="button" onclick="startTool();" value="开始选取区域" >
+                {/if}
+				<input class="btn btn-default" type="button" onclick="clearall();" value="清除">
+			</div>
+		</div>
+		<!--<p><input id="startBtn" type="button" onclick="startTool();" value="开始选取区域" />
+			<input type="button" onclick="map.clearOverlays();points=[];" value="清除" /></p>-->
+		<div id="bdcontent" style="width:100%;height:540px;" >
+
+		</div>
+	</div>
+
+</div>
+
+<script type="text/javascript">
+
+    var map = new BMap.Map("bdcontent");// 创建Map实例
+    map.centerAndZoom("重庆", 15);     // 初始化地图,设置中心点坐标和地图级别
+    var points =[];    //数组，放经纬度信息
+    var oldpoint=$('#infopoint').val();
+    if(oldpoint){
+          points=JSON.parse(oldpoint);
+          console.log(points);
+	}
+    map.enableScrollWheelZoom();
+
+    var key = 1;    //开关
+    var newpoint;   //一个经纬度点
+
+    var polyline = new BMap.Polyline(); //折线覆盖物
+    var gc = new BMap.Geocoder();//地址解析类
+    var addrpx=$('#infopx').val();
+    var address=$('#infoaddress').val();
+    if(points){
+      
+      polyline.setPath(points);   //设置折线的点数组
+       map.addOverlay(polyline);   //将折线添加到地图上
+    }
+    
+    function startTool(){   //开关函数
+        if(key==1){
+            clearall();
+            document.getElementById("startBtn").value = "确定选择";
+            key=0;
+        }
+        else{
+            if(points.length<3){
+                alert('您还没有选择区域');
+                return false;
+			}
+            map.disableDoubleClickZoom();   //关闭双击放大
+            var polygon = new BMap.Polygon(points);
+            //$('#infopx').val(addrpx);
+            map.addOverlay(polygon);   //将折线添加到地图上
+            document.getElementById("startBtn").value = "重新选择";
+            key=1;
+        }
+    }
+    map.addEventListener("click",function(e){   //单击地图，形成折线覆盖物
+        newpoint = new BMap.Point(e.point.lng,e.point.lat);
+        if(key==0){
+            //    if(points[points.length].lng==points[points.length-1].lng){alert(111);}
+                 // 创建标注
+            if(points.length>4){
+                alert('只能选五个点');
+                map.disableDoubleClickZoom();   //关闭双击放大
+                var polygon = new BMap.Polygon(points);
+                map.addOverlay(polygon);   //将折线添加到地图上
+                return false;
+            }
+            var markerhead = new BMap.Marker(newpoint);
+            map.addOverlay(markerhead);                     // 将标注添加到地图中
+            points.push(newpoint);  //将新增的点放到数组中
+            polyline.setPath(points);   //设置折线的点数组
+            map.addOverlay(polyline);   //将折线添加到地图上
+            gc.getLocation(e.point, function(rs){
+                showLocationInfo(e.point, rs);
+            });
+
+              }
+    });
+
+    function showLocationInfo(pt, rs){
+        var addComp = rs.addressComponents;
+        var addr = addComp.province + ", " + addComp.city + ", " + addComp.district + ", "+ addComp.street ;
+        address+=addComp.province + ", " + addComp.city + ", " + addComp.district + ","+ addComp.street+"|";
+         addrpx +=pt.lat+","+pt.lng+"|";
+        document.getElementById("info").innerHTML += '<div class="col-sm-9 col-xs-12">' + addr + '</div>';    //输出数组里的经纬度
+        $('#infoaddress').val(address);
+        $('#infopx').val(addrpx);
+
+
+    }
+    function clearall() {
+        map.clearOverlays();
+        points=[];
+		document.getElementById("info").innerHTML='';
+        addrpx='';
+        address='';
+        $('#infoaddress').val('');
+        $('#infopx').val('');
+    }
+</script>

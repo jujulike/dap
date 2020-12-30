@@ -1,0 +1,398 @@
+{extend name="public/base" /} {block name="body"}
+<script src="__PUBLIC__/admin/js/jquery-2.1.1.min.js"></script>
+<script src="__PUBLIC__/home/layui/layui.js"></script>
+<link href="__PUBLIC__/home/layui/css/layui.css" rel="stylesheet">
+<style>
+    .tab-pane {
+        display: none;
+    }
+    
+    .active {
+        display: block;
+    }
+    
+    .main .form-horizontal .form-group {
+        margin-bottom: 0;
+    }
+    
+    #modal-confirmsend .form-group {
+        margin-bottom: 15px;
+        display: flex;
+    }
+    
+    #modal-confirmsend .control-label {
+        margin-top: 0;
+    }
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox-content">
+                <form action="{:url()}" method="post" class="form-horizontal" enctype="multipart/form-data">
+                    <input type="hidden" name="id" value="{$item.id|default='0'}">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            基本信息
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group" style="margin-top: 10px;">
+                                <label class=" col-md-2 control-label">
+		<span style='color:red'>*</span>专题名称</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="zt_name" required id="goodsname" class="form-control" value="{$item['zt_name']}" />
+                                </div>
+                                <div class="col-sm-4">
+                                    <p class="help-block">用于显示名称</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class=" col-md-2 control-label"><span style='color:red'>*</span>专题描述</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="zt_desc" id="detail" class="form-control" value="{$item['zt_desc']}" />
+                                </div>
+                                <div class="col-sm-4">
+                                    <p class="help-block">专题描述</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">图片</label>
+                                <div class=" col-sm-6">
+                                    <img id="showhead" src="{$item['zt_pic']|default='/zhiing/admin/img/webuploader.png'}" style="max-height: 150px;max-width: 400px;">
+                                    <input type="file" name="file" id="file_head" style="display: none">
+                                </div>
+                                <div class="col-sm-4">
+                                    <p class="help-block">图片</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-9 col-sm-offset-2">
+
+                                <button class="btn btn-primary " id="submit" type="submit" target-form="form-horizontal">确 定</button>
+
+                            </div>
+                        </div>
+                </form>
+                <hr>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        优选商品（3个以上）
+                        <li style="float:right; margin-top:-8px;">
+                            <a href="{:url('coupon/addgood',['type'=>'1'])}"> <input type="button" class="btn btn-primary" value="添加商品"></a>
+                        </li>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+
+                            <table class="table table-striped add_tableimg2_table">
+                                <thead>
+                                    <tr>
+                                        <th>商品编号</th>
+                                        <th>商品名称</th>
+                                        <th>商品图</th>
+                                        <th>商品规格</th>
+                                        <th>价格</th>
+                                        <!--<th class="text-right">操作</th>-->
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {notempty name="ztgood.good"} {volist name="ztgood.good" id="vo"}
+                                    <tr>
+                                        <td>{$vo.id}</td>
+                                        <td>{$vo.title}</td>
+                                        <td><img src="{$vo.id|getGoodPic}" style="max-height: 50px;max-width: 50px;"></td>
+                                        <td>{$vo.goodoption}
+                                        </td>
+                                        <td>{$vo.price}
+                                        </td>
+                                        <!--<td class="text-right">
+                                                        <a href="{:url('good',['id'=>$vo.id])}" class="authorize">详情</a>
+                                                        <a href="{:url('order_del',['id'=>$vo.id])}" class="confirm ajax-get">删除</a>
+                                                    </td>-->
+                                    </tr>
+                                    {/volist} {else/}
+                                    <tr>
+                                        <td colspan="10" class="text-center"> aOh! 暂时还没有内容! </td>
+                                    </tr>
+                                    {/notempty}
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                </div>
+                <hr>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        优选店铺(3个以上)
+                        <li style="float:right; margin-top:-8px;">
+                            <a href="{:url('coupon/addshop',['type'=>'2'])}"> <input type="button" class="btn btn-primary" value="添加店铺"></a>
+                        </li>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+
+                            <table class="table table-striped add_tableimg2_table">
+                                <thead>
+                                    <tr>
+                                        <th>商家名称</th>
+                                        <th>商家地址</th>
+                                        <th>经营类目</th>
+                                        <th>联系电话</th>
+                                        <!--<th class="text-right">操作</th>-->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {notempty name="ztshop.shop"} {volist name="ztshop.shop" id="vo"}
+                                    <tr>
+                                        <td>{$vo.shopname}</td>
+                                        <td>{$vo.address}</td>
+                                        <td>{$vo.sid|getShopCate}</td>
+                                        <td>{$vo.mobile}
+                                        </td>
+                                        <!--<td class="text-right">
+                                                        <a href="{:url('order_info',['id'=>$vo.id])}" class="authorize">详情</a>
+                                                        <a href="{:url('order_del',['id'=>$vo.id])}" class="confirm ajax-get">删除</a>
+                                                    </td>-->
+                                    </tr>
+                                    {/volist} {else/}
+                                    <tr>
+                                        <td colspan="10" class="text-center"> aOh! 暂时还没有内容! </td>
+                                    </tr>
+                                    {/notempty}
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        专题商品
+                    </div>
+                    <div class="panel-body">
+                        <ul class="nav nav-tabs" id="myTab">
+                            <li class="active">
+                                <a href="#tab_basic" data="0">全部</a></li>
+                            {volist name="zttype" id="v"}
+                            <li><a href="#tab_{$v.id}" data="{$v.id}">{$v['name']}</a></li>
+                            {/volist}
+                            <li>
+                                <input type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-confirmprice" value="添加新分类"></li>
+                            <input type="button" id="changetypes" class="btn btn-primary add-offsetLeft" data-toggle="modal" style="display:none" data-target="#modal-confirmprice2" value="编辑分类"></li>
+                            <input type="hidden" id="newtype" value="0">
+                            <li style="float:right" onclick="toaddgood()"><input type="button" class="btn btn-primary" value="添加商品"></li>
+                        </ul>
+                        <div class="tab-pane active" id="tab_basic">
+
+                            <table class="table table-striped add_tableimg2_table">
+                                <thead>
+                                    <tr>
+                                        <th>商品编号</th>
+                                        <th>商品名称</th>
+                                        <th>商品图片</th>
+                                        <th>商品规格</th>
+                                        <th>价格</th>
+                                        <!--<th class="text-right">操作</th>-->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {notempty name="ztallgood"} {volist name="ztallgood" id="vo"}
+                                    <tr>
+                                        <td>{$vo.id}</td>
+                                        <td>{$vo.title}</td>
+                                        <td><img src="{$vo.id|getGoodPic}" style="max-height: 50px;max-width: 50px;"></td>
+                                        <td>{$vo.goods_option}</td>
+                                        <td>{$vo.price}</td>
+                                        <!-- <td class="text-right">
+                                                <a href="{:url('order_info',['id'=>$vo.id])}" class="authorize">详情</a>
+                                                <a href="{:url('order_del',['id'=>$vo.id])}" class="confirm ajax-get">删除</a>
+                                            </td>-->
+                                    </tr>
+                                    {/volist} {else/}
+                                    <tr>
+                                        <td colspan="10" class="text-center"> aOh! 暂时还没有内容! </td>
+                                    </tr>
+                                    {/notempty}
+                                </tbody>
+                            </table>
+                        </div>
+                        {volist name="zttype" id="vo"}
+                        <div class="tab-pane" id="tab_{$vo.id}">
+                            <table class="table table-striped add_tableimg2_table">
+                                <thead>
+                                    <tr>
+                                        <th>商品编号</th>
+                                        <th>商品名称</th>
+                                        <th>商品图片</th>
+                                        <th>商品规格</th>
+                                        <th>价格</th>
+                                        <!--<th class="text-right">操作</th>-->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {notempty name="vo.good"} {volist name="vo.good" id="v"}
+                                    <tr>
+                                        <td>{$v.id}</td>
+                                        <td>{$v.title}</td>
+                                        <td><img src="{$v.id|getGoodPic}" style="max-height: 50px;max-width: 50px;"></td>
+
+                                        <td>{$v.goods_option}
+                                        </td>
+                                        <td>{$v.price}
+                                        </td>
+                                        <!--<td class="text-right">
+
+                                                <a href="{:url('order_info',['id'=>$vo.id])}" class="authorize">详情</a>
+                                                <a href="{:url('order_del',['id'=>$vo.id])}" class="confirm ajax-get">删除</a>
+                                            </td>-->
+                                    </tr>
+                                    {/volist} {else/}
+                                    <tr>
+                                        <td colspan="10" class="text-center"> aOh! 暂时还没有内容! </td>
+                                    </tr>
+                                    {/notempty}
+                                </tbody>
+                            </table>
+                        </div>
+                        {/volist}
+
+                    </div>
+                </div>
+
+
+
+
+
+            </div>
+
+            <!-- 添加分类 -->
+            <div id="modal-confirmprice" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="width:600px;margin:0px auto;">
+                <form class="form-horizontal2 form" action="{:url('coupon/addzttype')}" method="post" enctype="multipart/form-data">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                                <h3>添加分类</h3>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">分类名称</label>
+                                    <div class="col-sm-9 col-xs-12">
+                                        <input type="text" name="name" value="" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div id="module-menus"></div>
+                            </div>
+                            <div class="modal-footer">
+
+                                <button type="submit" class="btn btn-primary" target-form="form-horizontal2">确认</button>
+                                <a href="#" class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div id="modal-confirmprice2" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="width:600px;margin:0px auto;">
+                <form class="form-horizontal2 form" action="{:url('coupon/addzttype')}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="id" id="changetypeid" value="">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                                <h3>编辑分类</h3>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">分类名称</label>
+                                    <div class="col-sm-9 col-xs-12">
+                                        <input type="text" name="name" id="changetypename" value="" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div id="module-menus"></div>
+                            </div>
+                            <div class="modal-footer">
+
+                                <button type="submit" class="btn btn-primary" target-form="form-horizontal2">确认</button>
+                                <a href="#" class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+{/block} {block name="script"}
+<script type="text/javascript">
+    highlight_subnav("{:url('coupon/zt')}");
+    $(function() {
+        window.optionchanged = false;
+        $('#myTab a').click(function(e) {
+            e.preventDefault(); //阻止a链接的跳转行为
+            $("#newtype").val($(this).attr('data'));
+            $("#changetypeid").val($(this).attr('data'));
+            $("#changetypename").val($(this).html());
+            if ($(this).attr('data') != 0) {
+                $("#changetypes").show();
+            } else {
+                $("#changetypes").hide();
+            }
+
+            $(this).tab('show'); //显示当前选中的链接及关联的content
+        })
+    });
+
+    function toaddgood() {
+        var d = 0;
+        d = $("#newtype").val();
+        console.log(d);
+        if (d == 0) {
+            alert("请选择分类");
+            return false;
+        } else {
+            window.location.href = "addgood?type=" + d;
+        }
+
+
+    }
+</script>
+<script type="text/javascript">
+    $(function() {
+        $("#file_head").on('change', function() {
+            var objUrl = getObjectURL(this.files[0]);
+            console.log("objUrl = " + objUrl);
+            if (objUrl) {
+                $("#showhead").attr("src", objUrl);
+                $("#file_head").attr("value", objUrl);
+            }
+        });
+        $("#showhead").click(function() {
+            $("#file_head").click();
+        });
+    });
+    //建立一個可存取到該file的url
+    function getObjectURL(file) {
+        var url = null;
+        if (window.createObjectURL != undefined) { // basic
+            url = window.createObjectURL(file);
+        } else if (window.URL != undefined) { // mozilla(firefox)
+            url = window.URL.createObjectURL(file);
+        } else if (window.webkitURL != undefined) { // webkit or chrome
+            url = window.webkitURL.createObjectURL(file);
+        }
+        return url;
+    }
+</script>
+
+{/block}

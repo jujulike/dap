@@ -1,0 +1,548 @@
+{extend name="public/base" /} {block name="sidebar"}{/block} {block name="style"}
+<style>
+    body {
+        padding: 0
+    }
+
+    #main {
+        margin-top: 50px;
+    }
+</style>
+<style>
+    .index-zfcdiv {
+        margin-top: 2%;
+        margin-left: 3%;
+        margin-bottom: 1%;
+        font-size: 1.6rem;
+        font-weight: 800;
+    }
+
+    i {
+        font-style: normal;
+    }
+
+    li {
+        list-style: none;
+    }
+
+    .index-xz .col-lg-4 div {
+        background: #fff;
+        padding: 10px;
+    }
+
+    .index-xz .col-lg-4 div span {
+        display: block;
+        float: right;
+        width: 50px;
+        line-height: 50px;
+        text-align: center;
+        height: 50px;
+        border-radius: 50%;
+        background: #fa9978;
+        overflow: hidden;
+        margin: auto;
+    }
+
+    .index-xz .col-lg-4 div span img {
+        width: 35px;
+        line-height: 35px;
+        height: 35px;
+        margin: auto;
+    }
+
+    .index-xz .col-lg-4 div span.sopn1 {
+        background: #a99de5;
+    }
+
+    .index-xz .col-lg-4 div span.sopn2 {
+        background: #7ed1a5;
+    }
+
+    .index-xz .col-lg-4 div dl {
+        float: left;
+        margin-left: 1%;
+        margin-bottom: 0;
+    }
+
+    .index-xz .col-lg-4 div dl dt {
+        color: #333;
+        font-size: 40px;
+        line-height: 50px;
+        font-weight: normal;
+        margin-top: 2%;
+    }
+
+    .index-xz .col-lg-4 div dl dd p {
+        color: #999;
+        font-size: 18px;
+        margin: 0;
+        line-height: 30px;
+    }
+
+    .index-xz .col-lg-4 div dl dd em {
+        display: inline-block;
+        font-style: normal;
+        font-size: 14px;
+        color: #ec4518;
+    }
+
+    .bgwhite {
+        background: #fff;
+        padding: 0 30px;
+    }
+
+    .indexyt p {
+        font-size: 18px;
+        color: #333;
+        margin-top: 20px;
+        line-height: 30px;
+    }
+
+    .flname {
+        display: block;
+        text-align: right;
+    }
+
+    .overlist {
+        margin-bottom: 40px;
+    }
+
+    .overlist .bgwhite {
+        padding: 30px 0 25px 0;
+    }
+
+    .olist ul li {
+        float: left;
+        width: 33.33%;
+        font-size: 14px;
+        color: #333;
+        overflow: hidden;
+    }
+
+    .olist ul li div {
+        margin-bottom: 15px
+    }
+
+    .overlist .oliru {
+        padding: 34px;
+        padding-left: 100px;
+        background: #fff url(__PUBLIC__/admin/img/zzlist4.jpg) no-repeat left 30px center / 60px auto;
+    }
+
+    .oliru dl {
+        float: left;
+        margin-bottom: 0;
+    }
+
+    .oliru dl.dldl {
+        padding-right: 30px;
+        margin-right: 30px;
+        border-right: 1px solid #eee;
+    }
+
+    .oliru dl dt {
+        color: #999;
+        font-size: 12px;
+        font-weight: normal;
+        margin-top: 10px;
+    }
+
+    .oliru dl dd {
+        color: #e98f73;
+        font-size: 24px;
+    }
+
+    @media only screen and (max-width: 1600px) {
+        #container41.cont {
+            height: 370px !important;
+        }
+        .index-xz .col-lg-4 div span {
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+        }
+        .index-xz .col-lg-4 div dl dt {
+            font-size: 36px;
+            line-height: 40px;
+        }
+        .index-xz .col-lg-4 div dl dd p {
+            font-size: 18px;
+        }
+        .overlist .oliru {
+            padding-left: 70px;
+            background: #fff url(__PUBLIC__/admin/img/zzlist4.jpg) no-repeat left 20px center / 40px auto;
+        }
+        .oliru dl.dldl {
+            padding-right: 10px;
+            margin-right: 10px;
+            border-right: 1px solid #eee;
+        }
+        .oliru dl dt {
+            margin-top: 5px;
+        }
+        .oliru dl dd {
+            font-size: 20px;
+        }
+    }
+
+    @media only screen and (max-width: 1400px) {
+        .index-xz .col-lg-4 div span {
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+        }
+        .index-xz .col-lg-4 div dl dt {
+            font-size: 28px;
+            line-height: 30px;
+        }
+        .index-xz .col-lg-4 div dl dd p {
+            font-size: 16px;
+        }
+        .overlist .oliru {
+            padding-left: 70px;
+            background: #fff url(__PUBLIC__/admin/img/zzlist4.jpg) no-repeat left 20px center / 40px auto;
+        }
+        .oliru dl.dldl {
+            padding-right: 10px;
+            margin-right: 10px;
+            border-right: 1px solid #eee;
+        }
+        .oliru dl dt {
+            margin-top: 5px;
+        }
+        .oliru dl dd {
+            font-size: 16px;
+        }
+    }
+
+    @media only screen and (max-width: 1280px) {
+        .index-xz .col-lg-4 div {
+            text-align: center;
+        }
+        .index-xz .col-lg-4 div span {
+            float: none;
+        }
+        .index-xz .col-lg-4 div dl {
+            float: none;
+            margin-left: 0;
+        }
+        .index-xz .col-lg-4 div dl dt {
+            font-size: 28px;
+            line-height: 30px;
+        }
+        .index-xz .col-lg-4 div dl dd p {
+            font-size: 16px;
+        }
+    }
+
+    @media only screen and (max-width: 1199px) {
+        .index-xz .col-lg-4 div {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .index-xz .col-lg-4 div span {
+            float: none;
+            width: 90px;
+            height: 90px;
+            line-height: 90px;
+        }
+        .index-xz .col-lg-4 div dl {
+            float: none;
+            margin-left: 0;
+        }
+        .index-xz .col-lg-4 div dl dt {
+            font-size: 38px;
+            line-height: 38px;
+        }
+        .index-xz .col-lg-4 div dl dd p {
+            font-size: 16px;
+        }
+        .olist ul li {
+            width: 50%;
+            font-size: 14px;
+            color: #333;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        .olist ul li div {
+            margin-bottom: 10px;
+        }
+    }
+
+    @media only screen and (max-width: 990px) {
+        .index-xz .col-lg-4 div span {
+            float: left;
+            width: 80px;
+            height: 80px;
+            line-height: 80px;
+        }
+        .index-xz .col-lg-4 div dl {
+            float: left;
+            margin-left: 5%;
+            text-align: left;
+        }
+        .index-xz .col-lg-4 div dl dt {
+            font-size: 30px;
+            line-height: 30px;
+        }
+        .index-xz .col-lg-4 div dl dd p {
+            font-size: 16px;
+        }
+        .overlist .oliru {
+            padding-left: 100px;
+            background: #fff url(__PUBLIC__/admin/img/zzlist4.jpg) no-repeat left 40px center / 40px auto;
+        }
+        .oliru dl.dldl {
+            padding-right: 30px;
+            margin-right: 30px;
+            border-right: 1px solid #eee;
+        }
+        .oliru dl dt {
+            margin-top: 5px;
+        }
+        .oliru dl dd {
+            font-size: 20px;
+        }
+    }
+
+    @media only screen and (max-width: 500px) {
+        .olist ul li {
+            float: none;
+            width: 100%;
+            font-size: 14px;
+            color: #333;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        .olist ul li:last-of-type,
+        .olist ul li:last-of-type div {
+            margin-bottom: 0;
+        }
+        .olist ul li div {
+            margin-bottom: 10px;
+        }
+        .overlist .oliru {
+            padding-left: 30px;
+            background: #fff;
+        }
+        .oliru dl.dldl {
+            padding-right: 30px;
+            margin-right: 30px;
+            border-right: 1px solid #eee;
+        }
+        .oliru dl dt {
+            margin-top: 5px;
+        }
+        .oliru dl dd {
+            font-size: 20px;
+        }
+    }
+</style>
+<script type="text/javascript" src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+{/block} {block name="body"}
+<!-- 主体 -->
+<div id="indexMain" class="wrapper-content">
+    <!-- 插件块 -->
+    <div class="row index-xz" style="margin-top: -2%;">
+        <div class="index-zfcdiv"> 今日数据</div>
+        <div class="col-lg-4 col-md-4 col-sm-12 col-sx-12" style="width: 20%">
+            <div class="clearfix">
+                <span> <img src="__PUBLIC__/admin/img/zzlist1.jpg" /> </span>
+                <dl>
+                    <dt><a href="{:url('group/order',['istime'=>1])}" style="color: #333">{$dataset['todayorder']}</a></dt>
+                    <dd>
+                        <p>今日新增订单</p>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12 col-sx-12" style="width: 20%">
+            <div class="clearfix">
+                <span class="sopn1"> <img src="__PUBLIC__/admin/img/zzlist3.jpg" /> </span>
+                <dl>
+                    <dt><a href="{:url('group/order',['istime'=>1])}" style="color: #333">{$dataset['todayordermoney']|default='0'}</a></dt>
+                    <dd>
+                        <p>今日新增客户</p>
+
+                    </dd>
+                </dl>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12 col-sx-12" style="width: 20%">
+            <div class="clearfix">
+                <span> <img src="__PUBLIC__/admin/img/zzlist1.jpg" /> </span>
+                <dl>
+                    <dt><a href="{:url('reserve_order/index',['istime'=>1])}" style="color: #333">{$dataset['hdayorder']|default='0'}</a></dt>
+                    <dd>
+                        <p>今日成交量</p>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12 col-sx-12" style="width: 20%">
+            <div class="clearfix">
+                <span class="sopn1"> <img src="__PUBLIC__/admin/img/zzlist3.jpg" /> </span>
+                <dl>
+                    <dt><a href="{:url('reserve_order/index',['istime'=>1])}" style="color: #333">{$dataset['hmoney']|default='0'}</a></dt>
+                    <dd>
+                        <p>今日新增运单</p>
+
+                    </dd>
+                </dl>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12 col-sx-12" style="width: 20%">
+            <div class="clearfix">
+                <span> <img src="__PUBLIC__/admin/img/zzlist1.jpg" /> </span>
+                <dl>
+                    <dt><a href="{:url('scoregood/balance',['istime'=>1])}" style="color: #333">{$dataset['bdayorder']|default='0'}</a></dt>
+                    <dd>
+                        <p>今日结算金额</p>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <div class="row index-xz">
+        <div class="" style="width:40%;float:left">
+            <div class="index-zfcdiv">待处理事项</div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-sx-12" style="width: 50%;height:150px;line-height:100px;">
+                <div class="clearfix">
+                    <span> <img src="__PUBLIC__/admin/img/zzlist1.jpg" /> </span>
+                    <dl>
+                        <dt><a href="{:url('group/order',['istime'=>1])}" style="color: #333">{$dataset['todayorder']}</a></dt>
+                        <dd>
+                            <p>今日新增订单</p>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-sx-12" style="width: 50%;height:150px;">
+                <div class="clearfix">
+                    <span class="sopn1"> <img src="__PUBLIC__/admin/img/zzlist3.jpg" /> </span>
+                    <dl>
+                        <dt><a href="{:url('group/order',['istime'=>1])}" style="color: #333">{$dataset['todayordermoney']|default='0'}</a></dt>
+                        <dd>
+                            <p>今日新增客户</p>
+
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-sx-12" style="width: 50%;height:150px; margin-top:2%;">
+                <div class="clearfix">
+                    <span> <img src="__PUBLIC__/admin/img/zzlist1.jpg" /> </span>
+                    <dl>
+                        <dt><a href="{:url('group/order',['istime'=>1])}" style="color: #333">{$dataset['todayorder']}</a></dt>
+                        <dd>
+                            <p>今日新增订单</p>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-sx-12" style="width: 50%; margin-top:2%;height:150px;">
+                <div class="clearfix">
+                    <span class="sopn1"> <img src="__PUBLIC__/admin/img/zzlist3.jpg" /> </span>
+                    <dl>
+                        <dt><a href="{:url('group/order',['istime'=>1])}" style="color: #333">{$dataset['todayordermoney']|default='0'}</a></dt>
+                        <dd>
+                            <p>近七日销售趋势</p>
+
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+
+            
+
+        </div>
+
+    <div class="col-lg-5 col-md-4  col-sm-12 col-sx-12" style="width:60%;float:right">
+
+            <div class="index-zfcdiv">近七日销售趋势</div>
+            <div class="oliru bgwhite clearfix" >
+                <div id="orders" style="height: 320px;width:100%;margin-top:-30px;">  </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <div class="row overlist indexyt">
+        <div class="col-lg-7 col-md-8  col-sm-12 col-sx-12" style="width:40%;">
+            <div class="index-zfcdiv">系统信息</div>
+            <div class=" olist bgwhite">
+                <ul class="clearfix">
+                    <li>
+                        <div>系统：{$Think.const.PHP_OS}</div>
+                        <span>版本：{$Think.VERSION}</span>
+                    </li>
+                    <li>
+                        <div>上传限制：{:ini_get('upload_max_filesize')}</div>
+                        <span>MYSQL版本： {php}
+                            $system_info_mysql = db()->query("select version() as v;");
+                            {/php}{$system_info_mysql.0.v}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-5 col-md-4  col-sm-12 col-sx-12" style="width:60%;">
+
+            <div class="index-zfcdiv">客服信息</div>
+            <div class="oliru bgwhite clearfix" style="">
+                <dl class="dldl">
+                    <dt>技术支持：</dt>
+                    <dd>023-88127148</dd>
+                </dl>
+                <dl>
+                    <dt>客服支持：</dt>
+                    <dd>023-88127148</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+<script type="text/javascript">
+                var dom = document.getElementById("orders");
+                var myChart = echarts.init(dom);
+                var app = {};
+                var colors = ['#449aba', '#64c529'];
+                option = null;
+                option = {
+                    color: colors,
+                    xAxis: {
+                        type: 'category',
+                        data: ['10-12', '10-13', '10-14', '10-15', '10-16', '10-17', '10-18']
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [{
+                        data: [112, 72, 278, 101, 395, 80, 78],
+                        smooth: true,
+                        type: 'line',
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'top'
+                            }
+                        }
+                    },
+                       
+                    ]
+                };
+
+                if(option && typeof option === "object") {
+                    myChart.setOption(option, true);
+                }
+            </script>
+{/block} {block name="script"} {/block}

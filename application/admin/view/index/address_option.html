@@ -1,0 +1,30 @@
+<div class="form-group">
+    <label class="col-xs-12 col-sm-3 col-md-2 control-label">运费价格：</label>
+    <div class="col-sm-9 col-xs-12">
+     <table class="table table-hover" id="attrTable">
+        <thead class="text-c">
+            <tr>
+                <th></th>
+                <th>说明</th>
+                <th>价格</th>
+                <th>最小数量</th>
+                <th>最大数量</th>
+            </tr>
+        </thead>
+        <tbody>
+            {volist name="option" id="vo"}
+            <tr>
+                <td><a href="javascript:;" onclick="delLevel(this,{$vo.id})">[-]条件{$i}</a></td>
+                <td><input type="text" class="form-control" name="rebate[{$i}][name]" value="{$vo.name}"/></td>
+                <td><input type="text" class="form-control" name="rebate[{$i}][money]" value="{$vo.money}"/></td>
+                <td><input type="text" class="form-control" name="rebate[{$i}][minnum]" value="{$vo.minnum}"/></td>
+                <td><input type="text" class="form-control" name="rebate[{$i}][maxnum]" value="{$vo.maxnum}"/></td>
+                <input type="hidden"  name="rebate[{$i}][option_id]" value="{$vo.id}"/>
+            </tr>
+            {/volist}
+                    
+        </tbody>
+    </table>
+        <a href="javascript:;" onclick="addLevel(this)">添加规则</a>
+    </div>
+</div>

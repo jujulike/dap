@@ -1,0 +1,129 @@
+{extend name="public/base" /}
+
+{block name="body"}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">筛选</div>
+                <div class="panel-body">
+                    <form method="get" action="{:url('')}" class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">名称</label>
+                            <div class="col-sm-2">
+                                <input type="text" name="keyword" class="form-control" value="{:input('keyword')}">
+                            </div>
+             
+                            <label class="col-sm-2 control-label">状态</label>
+                            <div class="col-sm-2">
+                                <select name="status" id="status" class="form-control">
+                                    <option value="">不限</option>
+                                    <option value="1" {if($status==1)}selected{/if}>下架</option>
+                                    <option value="2" {if($status==2)}selected{/if}>上架</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <button class="btn btn-default" type="submit">搜索</button>
+                        </div>
+                        <div class="form-group"></div>
+                    </form>
+                </div>
+            </div>
+            <div class="mail-box-header">
+                <!-- 表操作集合-->
+                <div class="mail-tools tooltip-demo">
+
+                    <div class="btn-group add-offsetRight">
+                        <div class="input-group inline">
+                            <a class="btn btn-sm btn-primary" href="{:url('addlevel')}"><i class="fa fa-plus"></i> 添加</a>
+                            <a class="btn btn-sm btn-danger add-offsetLeft ajax-post confirm" url="{:url('Good/changeSent?method=deleteuser&model=good\')}" target-form="ids"><i class="fa fa-trash-o"></i> 删除</a>
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                </div>
+                <!-- 表操作集合 - 结束-->
+            </div>
+
+          
+                <!-- 数据列表 -->
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <table class="table table-striped add_tableimg2_table">
+                            <thead>
+                                <tr>
+                                    <th class="i-checks checks-some" style="width: 20px;"><input type="checkbox" ></th>
+                                    <th class="" style="width: 50px;">ID</th>
+                                    <th class="">名称</th>
+                                    <th class="">状态</th>
+                                    <th class="">排序</th>
+                                    <th class="" style="width: 80px; text-align: right;">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {notempty name="_list"}
+                                {volist name="_list" id="vo"}
+                                <tr>
+                                    <td class="i-checks checks-block ids">
+                                        <input type="checkbox" name="id[]" value="{$vo.sid}"></td>
+                                    <td>{$vo.id} </td>
+                                    <td><span class="text-danger"></span>{$vo.name}</td>
+                                   
+                                    <td>
+                                        <span data="{$vo['status']}" class="label label-default {eq name="vo.status" value="1"}label-info{/eq} " onclick="setProperty(this,{$vo['id']},'status')"> {eq name="vo.status" value="1"}上架{else/}下架{/eq}</span>
+                                    </td>
+                                    <td>{$vo.sort} </td>
+                                    <td align="right">
+                                       
+                                        <a href="{:url('addlevel')}?id={$vo.id}"class="authorize">编辑</a>
+                                        <a href="{:url('Myuser/changeSent?method=deleteuser&model=user_level&id='.$vo['id'])}" class="confirm ajax-get">删除</a>
+                                    </td>
+                                </tr>
+                                {/volist}
+                                {else/}
+                                <td colspan="9" class="text-center"> aOh! 暂时还没有内容! </td>
+                                {/notempty}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- 分页-->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            {$_page}
+                        </div>
+                    </div>
+                    <!-- 分页 - 结束 -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+    
+
+<script type="text/javascript">
+    
+    //状态修改
+    function setProperty(obj,id,type){
+        $(obj).html($(obj).html() + "...");
+        $.post("{:url('Myuser/setproperty?model=user_level')}",{id:id,type:type, data: obj.getAttribute("data"),attrid:2,sta:1}
+            ,function(d){
+                $(obj).html($(obj).html().replace("...",""));
+                if(type=='status'){
+                 $(obj).html( d.data=='1'?'上架':'下架');
+                }
+                $(obj).attr("data",d.data);
+                if(d.result==1){
+                    $(obj).toggleClass("label-info");
+                }
+            }
+            ,"json"
+        );
+    }
+</script>
+{/block}

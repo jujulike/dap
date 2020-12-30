@@ -1,0 +1,97 @@
+<script src="../../../../../public/ueditor/ueditor.all.js"></script>{extend name="public/base" /}
+
+{block name="body"}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox-content">
+                <form action="{:url()}" method="post" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">上级菜单</label>
+                        <div class="col-sm-6">
+                            <select name="pid" class="form-control">
+                                {volist name="Menus" id="menu"}
+                                <option value="{$menu.id}" {eq name="info['pid']" value="$menu['id']"}selected{/eq}>{$menu.title_show}</option>
+                                {/volist}
+                            </select>
+                        </div>
+                        <div class="col-sm-4"><p class="help-block">所属的上级菜单</p></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">标题</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" name="title" value="{$info.title|default=''}">
+                        </div>
+                        <div class="col-sm-4"><p class="help-block">用于后台显示的配置标题</p></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">链接</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" name="url" value="{$info.url|default=''}">
+                        </div>
+                        <div class="col-sm-4"><p class="help-block">U函数解析的URL或者外链</p></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">字体图标</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" name="icon" value="{$info.icon|default=''}">
+                        </div>
+                        <div class="col-sm-4"><p class="help-block">用于顶级菜单显示</p></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">分组</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" name="group" value="{$info.group|default=''}">
+                        </div>
+                        <div class="col-sm-4"><p class="help-block">用于左侧分组二级菜单</p></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">排序</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" name="sort" value="{$info.sort|default=0}">
+                        </div>
+                        <div class="col-sm-4"><p class="help-block">用于分组显示的顺序</p></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">是否隐藏<span class="check-tips"></span></label>
+                        <div class="col-sm-6">
+                            <input type="radio" name="hide" class="i-checks" value="1" {eq name="info['hide']" value="1"}checked{/eq} > 是 &nbsp; &nbsp;
+                            <input type="radio" name="hide" class="i-checks" value="0" {eq name="info['hide']" value="0"}checked{/eq} > 否
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">仅开发者模式可见<span class="check-tips"></span></label>
+                        <div class="col-sm-6">
+                            <input type="radio" name="is_dev" class="i-checks"  value="1" {eq name="info['is_dev']" value="1"}checked{/eq} > 是 &nbsp; &nbsp;
+                            <input type="radio" name="is_dev" class="i-checks"  value="0" {eq name="info['is_dev']" value="0"}checked{/eq} > 否
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">说明</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" name="tip" value="{$info.tip|default=''}">
+                        </div>
+                        <div class="col-sm-4"><p class="help-block">菜单详细说明</p></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-9 col-sm-offset-2">
+                        <input type="hidden" name="id" value="{$info.id|default=''}">
+                        <button class="btn btn-primary ajax-post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+                        <button class="btn btn-default" onclick="javascript:history.back(-1);return false;">返 回</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+    <script type="text/javascript">
+        //导航高亮
+        highlight_subnav('{:url('index')}');
+    </script>
+{/block}

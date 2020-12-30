@@ -1,0 +1,233 @@
+{extend name="public/base" /}
+{block name="body"}
+<script src="__PUBLIC__/admin/js/jquery-2.1.1.min.js"></script>
+<script src="__PUBLIC__/home/layui/layui.js"></script>
+<link href="__PUBLIC__/home/layui/css/layui.css" rel="stylesheet">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <style type="text/css">
+    .main .form-horizontal .form-group{margin-bottom:0;}
+    #modal-confirmsend .form-group{margin-bottom:15px;display: flex;}
+    #modal-confirmsend .control-label{margin-top:0;}
+</style>
+
+<div class="main">
+    
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                退款订单信息
+            </div>
+            <div class="panel-body">
+                
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">价钱 :</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <p class="form-control-static">{$list['goodprice']*$list['num']} 元 </p>
+                        
+                    </div>
+                    
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">退款金额</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <p class="form-control-static">{$list['refundmoney']} 元 </p>
+                        
+                    </div>
+                    
+                </div>
+                
+               
+                
+               
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">退款状态 :</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <p class="form-control-static">
+                           
+                                <span class="label label-warning">{$list.refund}</span>
+                                
+                        </p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">申请时间 :</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <p class="form-control-static">{$list.refundtime|date="Y-m-d H:i",###}</p>
+                    </div>
+                </div>
+              
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">原因 :</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <p class="form-control-static">{$list.refundcontent|default="未填写"}</p>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+        
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                商品信息
+            </div>
+            <div class="panel-body table-responsive">
+                <table class="table table-hover">
+                    <thead class="navbar-inner">
+                    <tr>
+                        <th style="width:5%;">ID</th>
+                        <th style="width:10%;">商品名称</th>
+                        <th style="width:10%;">商品图片</th>
+                        <th style="width:10%;">属性</th>
+                        <th style="width:10%;color:red;">商品价格</th>
+                        <th style="width:5%;">数量</th>
+                    </tr>
+                    </thead>
+                    
+                    <tr>
+                        <td>{$list['goodid']}</td>
+                        <td>{$list['goodname']}</td>
+                        <td><img src="{$list['pic']}" width="80" height="80"></td>
+                        <td><span class="label label-info">{$list['opname']}</span></td>
+                        <td style='color:red;font-weight:bold;'>{$list['goodprice']}</td>
+                        <td>{$list['num']}</td>
+                    </tr>
+                  
+                    <tr>
+                        <td colspan="6" class="text-right">
+
+                        {if $list['is_refundok']==1}
+                           
+                        {else}
+                            <!-- {if empty($item['sent'])}
+                                <a href="{:url('order_sent',['op'=>'confrimpay','id'=>$item['id']])}" class="btn btn-primary" onclick="return confirm('确认付款此订单吗？'); return false;">确认付款</a>
+                            {/if} -->
+                            {if $list['refundstatus']==2}
+                               <a class="btn btn-danger confirm ajax-get" href="{:url('order_sent',['op'=>'close','id'=>$item['id']])}">确认打款</a>
+                                
+                            {/if}
+                               {if $list['refundstatus']==3}
+                               <a class="btn btn-danger confirm ajax-get" href="{:url('order_sent',['op'=>'close','id'=>$item['id']])}">协商后强制退款</a>
+                                
+                            {/if}  
+                         
+                            
+
+                        {/if}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        
+        <!-- 确认发货 -->
+        <div id="modal-confirmsend" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="width:600px;margin:0px auto;">
+            <form class="form-horizontal form" action="" method="post" enctype="multipart/form-data">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                        <h3>快递信息</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-3 col-md-2 control-label">快递公司</label>
+                            <div class="col-sm-9 col-xs-12">
+                                <select class="form-control" name="express" id="express" required>
+                                    <option value="其他快递" data-name="其他快递">其他快递</option>
+                                    <option value="顺丰" data-name="顺丰">顺丰</option>
+                                    <option value="申通" data-name="申通">申通</option>
+                                    <option value="韵达快运" data-name="韵达快运">韵达快运</option>
+                                    <option value="天天快递" data-name="天天快递">天天快递</option>
+                                    <option value="圆通速递" data-name="圆通速递">圆通速递</option>
+                                    <option value="中通速递" data-name="中通速递">中通速递</option>
+                                    <option value="ems快递" data-name="ems快递">ems快递</option>
+                                    <option value="宅急送" data-name="宅急送">宅急送</option>
+                                    <option value="德邦物流" data-name="德邦物流">德邦物流</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-3 col-md-2 control-label">快递单号</label>
+                            <div class="col-sm-9 col-xs-12">
+                                <input type="text" name="expresssn" required class="form-control" />
+                            </div>
+                        </div>
+                        <div id="module-menus"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="id" value="{$item.id}">
+                        <button type="submit" class="btn btn-primary" target-form="form-horizontal">确认发货</button>
+                        <a href="#" class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</a>
+                    </div>
+                </div>
+            </div>
+            </form>
+        </div>
+
+        <!-- 修改价格 -->
+        <div id="modal-confirmprice" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="width:600px;margin:0px auto;">
+            <form class="form-horizontal form" action="{:url('upprice')}" method="post" enctype="multipart/form-data">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                        <h3>修改价格</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-3 col-md-2 control-label">商品价格</label>
+                            <div class="col-sm-9 col-xs-12">
+                               <input type="text" name="goodsprice" value="{$item.goodsprice}" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-3 col-md-2 control-label">快递价格</label>
+                            <div class="col-sm-9 col-xs-12">
+                                <input type="text" name="mailprice" value="{$item.mailprice}" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-12 col-sm-3 col-md-2 control-label">优惠券</label>
+                            <div class="col-sm-9 col-xs-12">
+                                <input type="text" readonly value="{$item.couponprice}" class="form-control" />
+                            </div>
+                        </div>
+                        <div id="module-menus"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="id" value="{$item.id}">
+                        <button type="submit" class="btn btn-primary" target-form="form-horizontal">确认修改</button>
+                        <a href="#" class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</a>
+                    </div>
+                </div>
+            </div>
+            </form>
+        </div>
+
+    
+</div>
+
+</div>
+
+
+
+
+{/block}
+
+{block name="script"}
+<script type="text/javascript">
+    //导航高亮
+    highlight_subnav('{:url('Group/tkorder')}');
+    $(function(){
+        {if !empty($express)}
+            $("#express").find("option[data-name='{$express['express_name']}']").attr("selected",true);
+            $("#expresscom").val($("#express").find("option:selected").attr("data-name"));
+        {/if}
+            $("#express").change(function(){
+                var obj = $(this);
+                var sel = obj.find("option:selected").attr("data-name");
+                $("#expresscom").val(sel);
+            });
+    });
+</script>
+{/block}

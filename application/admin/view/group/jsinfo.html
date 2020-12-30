@@ -1,0 +1,95 @@
+{extend name="public/base" /}
+{block name="body"}
+<script src="__PUBLIC__/admin/js/jquery-2.1.1.min.js"></script>
+<script src="__PUBLIC__/home/layui/layui.js"></script>
+<link href="__PUBLIC__/home/layui/css/layui.css" rel="stylesheet">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <style type="text/css">
+    .main .form-horizontal .form-group{margin-bottom:0;}
+    #modal-confirmsend .form-group{margin-bottom:15px;display: flex;}
+    #modal-confirmsend .control-label{margin-top:0;}
+</style>
+
+<div class="main">
+    
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                单商户结算信息
+            </div>
+            <div class="panel-body table-responsive">
+           
+          
+            
+            <div class="panel-heading">
+           
+            </div>
+                <table class="table table-hover">
+                    <thead class="navbar-inner">
+                    <tr>
+                        <th style="width:5%;">ID</th>
+                        <th style="width:5%;">商品图片</th>
+                        <th style="width:10%;">商品名称</th>
+                        <th style="width:10%;">属性</th>
+                        <th style="width:10%;color:red;">商品价格</th>
+                        <th style="width:5%;">数量</th>
+                        <th style="width:5%;">操作</th>
+                    </tr>
+                    </thead>
+                    {volist name="shop.goods" id="good"}
+                    <tr>
+                        <td>{$good['id']}</td>
+                        <td><img src="{$good['pic']}" width=100px height=100px></td>
+                        <td>{$good['goodname']}</td>
+                        <td><span class="label label-info">{$good['opname']}</span></td>
+                        <td style='color:red;font-weight:bold;'>{$good['goodprice']}</td>
+                        <td>{$good['num']}</td>
+                         <td>{if ($good['refundstatus']==1)} 
+                         退款待处理
+                         {elseif ($good['refundstatus']==3)}
+                         退款已拒绝
+                         <br>
+                        <a > 结算此部分订单</a>
+                         {elseif($good['refundstatus']==2)&&($good['refundok']==1)}
+                         已退款
+                         {elseif($good['refundstatus']==2)&&($good['refundok']==0)}
+                         退款已同意
+                         {else}
+                         无退款
+                         <br>
+                         <a > 结算此部分订单</a>
+                         {/if}
+                        </td>
+                    </tr>
+                    {/volist}
+                    
+                </table>
+
+            </div>
+             </div>
+        </div>
+        
+      </div>   
+        
+
+
+
+
+{/block}
+
+{block name="script"}
+<script type="text/javascript">
+    //导航高亮
+    highlight_subnav('{:url('Group/order')}');
+    $(function(){
+        {if !empty($express)}
+            $("#express").find("option[data-name='{$express['express_name']}']").attr("selected",true);
+            $("#expresscom").val($("#express").find("option:selected").attr("data-name"));
+        {/if}
+            $("#express").change(function(){
+                var obj = $(this);
+                var sel = obj.find("option:selected").attr("data-name");
+                $("#expresscom").val(sel);
+            });
+    });
+</script>
+{/block}

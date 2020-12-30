@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>{$meta_title}_{$con.value}</title>
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0; url=/ie.html" />
+    <![endif]-->
+
+    <link href="__PUBLIC__/admin/css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <!--iCheck-->
+    <link href="__PUBLIC__/admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <!--toastr-->
+    <link href="__PUBLIC__/admin/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+    <!-- Input Mask-->
+    <link href="__PUBLIC__/admin/css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
+    <!-- select2 -->
+    <link href="__PUBLIC__/admin/css/plugins/select2/select2.css" rel="stylesheet" />
+    <link href="__PUBLIC__/admin/css/plugins/select2/select2-bootstrap.css" rel="stylesheet" />
+
+    <!-- gritter -->
+    <link href="__PUBLIC__/admin/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+
+    <link href="__PUBLIC__/admin/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/style.css?v=2.2.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/adam-style.css?v=1.0" rel="stylesheet">
+    <link href="__PUBLIC__/admin/uploadify/uploadify.css" rel="stylesheet">
+    <link href="__PUBLIC__/admin/css/layimgs.css" rel="stylesheet">
+    {block name="style"}{/block}
+
+</head>
+
+<body>
+<!--fancybox-->
+
+<!-- loading 层-->
+<div class="add_loading" id="add_js_loading">
+    <div class="spinner_container">
+        <div class="spinner">
+            <div class="spinner-container container1">
+                <div class="circle1"></div>
+                <div class="circle2"></div>
+                <div class="circle3"></div>
+                <div class="circle4"></div>
+            </div>
+            <div class="spinner-container container2">
+                <div class="circle1"></div>
+                <div class="circle2"></div>
+                <div class="circle3"></div>
+                <div class="circle4"></div>
+            </div>
+            <div class="spinner-container container3">
+                <div class="circle1"></div>
+                <div class="circle2"></div>
+                <div class="circle3"></div>
+                <div class="circle4"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal模板 -->
+<div class="modal inmodal" id="add_iframe_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight"></div>
+    </div>
+</div>
+
+<!-- modal模板-大 -->
+<div class="modal inmodal" id="add_iframe_modal_lg" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content animated bounceInRight"></div>
+    </div>
+</div>
+
+<div id="wrapper">
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav" id="side-menu">
+                <li class="nav-header" style="text-align: center;">
+                    <div class="dropdown profile-element">
+                        <span><img alt="image" class="img-circle" src="__PUBLIC__/admin/img/profile_small.jpg" /></span>
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="javascript:;">
+                            <span class="clear">
+                                <span class="block m-t-xs"> <strong class="font-bold"></strong></span>
+                                <span class="text-muted text-xs block">{:session('user_auth.username')} <b class="caret"></b></span>
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                            <li><a href="{:url('User/updatePassword')}">修改密码</a></li>
+                            <li><a href="{:url('Admin/delcache')}" class="ajax-get">更新缓存</a></li>
+                            <li class="divider"></li>
+                            <li><a href="{:url('Publics/logout')}">安全退出</a></li>
+                        </ul>
+                    </div>
+                    <div class="logo-element">zfc</div>
+                </li>
+                <!-- 导航开始 -->
+                {volist name="__MENU__" id="menu"}
+                <li class="{$menu.class|default=''}">
+                    <a href="{$menu.url|url}"><i class="fa {$menu.icon|default='fa-th-large'}"></i> <span class="nav-label">{$menu.title}</span>{notempty name="menu['child']"}<span class="fa arrow"></span>{/notempty}</a>
+                        {notempty name="menu['child']"}
+                        <ul class="nav nav-second-level collapse">
+                            {volist name="menu['child']" id="vo"}
+                                <li class="{$vo.class|default=''}"><a href="{$vo.url|url}">{$vo.title}</a></li>
+                            {/volist}
+                        </ul>
+                        {/notempty}
+                </li>
+                {/volist}
+                <!-- 导航结束 -->
+            </ul>
+
+        </div>
+    </nav>
+
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+
+                </div>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li>
+                        <span class="m-r-sm text-muted welcome-message">
+                            <a href="/" target="_blank" title="返回首页"><i class="fa fa-home"></i>
+                            </a>{:session('user_auth.username')}，欢迎使用{$con.value}</span>
+                    </li>
+
+                    <li>
+                        <a href="{:url('Publics/logout')}">
+                            <i class="fa fa-sign-out"></i> 退出
+                        </a>
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
+
+        <!-- 顶部面包屑-->
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-sm-12">
+                <div class="title-action-area">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                    <h2>{$meta_title}</h2>
+                </div>
+            </div>
+
+        </div>
+        <!-- 顶部面包屑 结束-->
+
+        <!-- 中部内容区 -->
+        {block name="body">}{/block}
+        <!-- 中部内容区结束 -->
+
+        <div class="row">
+            <div class="footer">
+                <div class="pull-right">
+                    By：<a href="#" target="_blank">{$con.value}</a>
+                </div>
+                <div>
+                    <strong>Copyright</strong> {$con.value} &copy; <?php echo date('Y');?>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+
+    </div>
+    <div class="clearfix"></div>
+</div>
+
+<!-- Mainly scripts -->
+<script src="__PUBLIC__/admin/js/jquery-2.1.1.min.js"></script>
+<script src="__PUBLIC__/admin/js/bootstrap.min.js?v=3.4.0"></script>
+
+<script src="__PUBLIC__/admin/js/lib/noAnimated.js"></script>
+
+<script src="__PUBLIC__/admin/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="__PUBLIC__/admin/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="__PUBLIC__/admin/js/plugins/toastr/toastr.min.js"></script>
+<script src="__PUBLIC__/admin/js/plugins/layer/layer.js"></script>
+
+<!-- laydate-->
+<script src="__PUBLIC__/admin/js/plugins/jquery-tmpl-master/jquery.tmpl.min.js"></script>
+<!-- laydate-->
+<script src="__PUBLIC__/admin/js/plugins/layer/laydate/laydate.js"></script>
+<!-- Input Mask-->
+<script src="__PUBLIC__/admin/js/plugins/jasny/jasny-bootstrap.min.js"></script>
+<!-- select2 -->
+<script src="__PUBLIC__/admin/js/plugins/select2/select2.min.js"></script>
+<!-- iCheck -->
+<script src="__PUBLIC__/admin/js/plugins/iCheck/icheck.min.js"></script>
+<!-- jQuery Validation plugin javascript-->
+<script src="__PUBLIC__/admin/js/plugins/validate/jquery.validate.min.js"></script>
+<script src="__PUBLIC__/admin/js/plugins/validate/adam-additional-methods.js"></script>
+
+<!-- 消息提醒 -->
+<script src="__PUBLIC__/admin/js/plugins/gritter/jquery.gritter.min.js"></script>
+
+<!-- Form Handle Plugin by Adam -->
+<script src="__PUBLIC__/admin/js/lib/function.js"></script>
+<script src="__PUBLIC__/admin/js/lib/FormHandle.js"></script>
+<!-- Fancy box -->
+<script src="__PUBLIC__/admin/js/plugins/fancybox/jquery.fancybox.js"></script>
+
+<!-- Form Handle Plugin by Adam -->
+<script src="__PUBLIC__/admin/js/hplus.js"></script>
+<script src="__PUBLIC__/admin/js/lib/common.js"></script>
+<script src="__PUBLIC__/admin/js/lib/hash.js"></script>
+<script src="__PUBLIC__/admin/uploadify/jquery.uploadify.js"></script>
+{block name="script"}{/block}
+</body>
+</html>

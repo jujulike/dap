@@ -1,0 +1,133 @@
+{extend name="public/base" /}
+{block name="body"}
+<script src="__PUBLIC__/admin/js/jquery-2.1.1.min.js"></script>
+<script src="__PUBLIC__/home/layui/layui.js"></script>
+<link href="__PUBLIC__/home/layui/css/layui.css" rel="stylesheet">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <style type="text/css">
+    .main .form-horizontal .form-group{margin-bottom:0;}
+    #modal-confirmsend .form-group{margin-bottom:15px;display: flex;}
+    #modal-confirmsend .control-label{margin-top:0;}
+</style>
+
+<div class="main">
+    
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                基本信息
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">用户头像：</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <p class="form-control-static"><img src="{$userinfo.headimgurl|default='__PUBLIC__/home/images/head_default.png'}" style="width:100px;height:100px;"></p>
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">昵称：</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <p class="form-control-static">{$userinfo.nickname|default="暂未设置"}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">真实姓名：</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <p class="form-control-static"> {$userinfo.realname|default="暂未设置"}</p>
+                    </div>
+                </div>
+              
+				 <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">手机号：</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <p class="form-control-static"> {$userinfo.mobile|default="暂未设置"}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">积分：</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <p class="form-control-static">{$userinfo.totalscore}</p>
+                    </div>
+                </div>
+				 <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">余额：</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <p class="form-control-static">{$userinfo.totalprice}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">地址信息：</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <p class="form-control-static">{$userinfo.city}</p>
+                    </div>
+                </div>
+				  <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">注册时间：</label>
+                    <div class="col-sm-9 col-xs-12">
+                        <p class="form-control-static">{if($userinfo.addtime)}{$userinfo.addtime|date="Y-m-d H:i",###}{/if}</p>
+                    </div>
+                </div>
+				 <div class="form-group">
+                    <label class="col-xs-12 col-sm-3 col-md-2 control-label">身份状态：</label>
+                    <div class="col-sm-9 col-xs-12">
+						<form method="post" action="{:url('Myuser/set_type')}" class="form-horizontal">
+                        <p class="form-control-static">
+							<!--<input type="checkbox"  value="0" class="i-checks" {eq name="puy" value="1"}checked{/eq} /> 普通会员 -->
+							<input type="checkbox" name="istype[]" value="1" class="i-checks" {eq name="meth.b" value="1"}checked{/eq} /> 游玩核销员
+							<input type="checkbox" name="istype[]" value="2" class="i-checks" {eq name="meth.c" value="2"}checked{/eq} /> 美食核销员
+							
+							<input type="checkbox" name="istype[]" value="3" class="i-checks" {eq name="meth.d" value="3"}checked{/eq} /> 酒店核销员
+							<!--<input type="checkbox" name="istype[]" value="4" class="i-checks" {eq name="meth.e" value="4"}checked{/eq} /> 套票核销员-->
+							<input type="checkbox" name="istype[]" value="5" class="i-checks" {eq name="meth.f" value="5"}checked{/eq} /> 活动核销员
+							<input type="checkbox" name="istype[]" value="6" class="i-checks" {eq name="meth.g" value="6"}checked{/eq} /> 商城核销员
+						<!--<select name="istype" class="form-control" style="width:200px;float:left;">
+							<option value="0" {eq name="userinfo.istype" value="0"}selected="selected"{/eq}>普通会员</option>
+							<option value="1" {eq name="userinfo.istype" value="1"}selected="selected"{/eq}>游玩核销员</option>
+							<option value="2" {eq name="userinfo.istype" value="2"}selected="selected"{/eq}>美食核销员</option>
+							<option value="3" {eq name="userinfo.istype" value="3"}selected="selected"{/eq}>酒店核销员</option>
+							<option value="4" {eq name="userinfo.istype" value="4"}selected="selected"{/eq}>套票核销员</option>
+							<option value="5" {eq name="userinfo.istype" value="5"}selected="selected"{/eq}>活动核销员</option>
+							<option value="6" {eq name="userinfo.istype" value="6"}selected="selected"{/eq}>商城核销员</option>
+						</select>-->
+						<input type="hidden" name="uid" value="{$userinfo['uid']}"/> 
+						<button class="btn btn-default" type="submit">提交</button>
+						</form>
+						<!--<span data="{$userinfo['istype']}" class="label label-default {eq name="userinfo.istype" value="1"}label-info{/eq} " onclick="setProperty(this,{$userinfo['uid']},'istype')"> {eq name="userinfo.istype" value="1"}已是核销员{else/}待成为核销员{/eq}</span>-->
+						</p>
+                    </div>
+                </div>
+				
+				
+            </div>
+        </div>
+		 <div class="form-group" style="padding-top: 20px;">
+			<div class="col-sm-12">
+				<a class="btn btn-default" href="{:url('myuser/index')}">返 回</a>
+			</div>
+		</div>
+</div>
+</div>
+{/block}
+
+{block name="script"}
+<script type="text/javascript">
+    //导航高亮
+    highlight_subnav('{:url('myuser/index')}');
+   //状态修改
+    function setProperty(obj,id,type){
+        $(obj).html($(obj).html() + "...");
+        $.post("{:url('Myuser/setpropertya?model=user')}",{id:id,type:type, data: obj.getAttribute("data"),attrid:2,sta:1}
+            ,function(d){
+                $(obj).html($(obj).html().replace("...",""));
+                if(type=='istype'){
+                 $(obj).html( d.data=='1'?'已是核销员':'待成为核销员');
+                }
+                $(obj).attr("data",d.data);
+                if(d.result==1){
+                    $(obj).toggleClass("label-info");
+                }
+            }
+            ,"json"
+        );
+    }
+</script>
+{/block}

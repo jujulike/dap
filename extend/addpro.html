@@ -1,0 +1,281 @@
+{extend name="public/base" /}
+
+{block name="body"}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="mail-box-header">
+                <!-- 表操作集合-->
+                {if $project.id}{else}
+             <div class="btn-group add-offsetRight">
+                    <div class="input-group inline">
+                        <form action="{:url('customer/expinexcel')}" method="post" enctype="multipart/form-data">
+                            <div class="input-group-btn add_js_group2"style="float: right;display: inline-block;width: 20%;" >
+                                <button type="submit" class="btn btn-sm btn-primary add-offsetLeft"   onClick="exportorder()">导入</button>
+                            </div>
+                            <input id="hello33"  type="file" class="form-control " style="width: 80%;float: left;display: inline-block;" value="" placeholder="" name="file" >
+                        </form>
+                    </div>
+                </div>
+                 {/if}
+            </div>
+
+            <div class="ibox-content">
+                <form action="{:url()}" id="myform" method="post" class="form-horizontal">
+                    <input type="hidden" value="{$project.id}" name="id">
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">合同编号：</label>
+                        <div class="input-group col-sm-8">
+                            <input type="text" name="title" id="tel" value="{$project.title}" class="form-control" placeholder="请输入项目名称" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">客户/企业名称：</label>
+                        <div class="input-group col-sm-8">
+                            <input id="conpang" type="text" class="form-control" name="company" value="{$project.company}" placeholder="输入企业名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">客户联系人：</label>
+                        <div class="col-sm-3" style="padding-left: 0px;">
+                            <input type="text" name="custname"  value="{$project.custname}" placeholder="输入客户联系人"  class="form-control" >
+                        </div>
+                        <label class="col-sm-2 control-label">客户电话：</label>
+                        <div class=" col-sm-3" >
+                            <input type="text" name="custphone"  value="{$project.custphone}" placeholder="输入客户电话"  class="form-control" >
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">客户地址：</label>
+                        <div class="input-group col-sm-8" >
+                            <input type="text" name="custaddress" value="{$project.custaddress}" placeholder="输入客户地址"  class="form-control" >
+                        </div>
+                    </div>
+                   <!-- <div class="form-group">
+                        <label class="col-sm-2 control-label">前端：</label>
+                        <div class=" col-sm-3" style="padding-left: 0px;">
+                            <input type="text" name="qduser" value="{$project.qduser}" placeholder="输入前端人员"  class="form-control" >
+                        </div>
+
+                        <label class="col-sm-2 control-label">程序：</label>
+                        <div class=" col-sm-3">
+                            <input type="text" name="webuser" value="{$project.webuser}" placeholder="输入程序人员"  class="form-control" >
+                        </div>
+                    </div>-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">总金额：</label>
+                        <div class=" col-sm-3" style="padding-left: 0px;">
+                            <input type="text" name="totalmoney"  value="{$project.totalmoney}" placeholder="输入项目总金额"  class="form-control" >
+                        </div>
+                        <label class="col-sm-2 control-label">首交金额：</label>
+                        <div class=" col-sm-3" >
+                            <input type="text" name="money" value="{$project.money}" placeholder="输入项目已收金额"  class="form-control" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">网站域名：</label>
+                        <div class=" col-sm-3" style="padding-left: 0px;">
+                            <input type="text" name="website"  value="{$project.website}" placeholder="输入测试网站域名"  class="form-control" >
+                        </div>
+                        <label class="col-sm-3 " style="text-align: right;">公司域名：</label>
+                        <div class=" col-sm-2" style="padding-left: 0px;">
+                            <label >
+                                <input type="radio" name="is_company" id="optionsRadios9"
+                                       value="1" {if $project.is_company=="1"}checked{/if}> 是
+                            </label>
+                            <label>
+                                <input type="radio" name="is_company" id="optionsRadios10"
+                                       value="2" {if $project.is_company=="2"}checked{/if}> 否
+                            </label>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">制作项目：</label>
+                        <div class="input-group col-sm-8">
+                            <input type="text" name="palyent"  value="{$project.palyent}" placeholder="输入需求平台如：pc端，wap端，小程序，微信端"  class="form-control" >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">合同签订时间：</label>
+                        <div class="col-sm-3" style="padding-left: 0px;">
+                            <input id="hello1"  class="form-control layer-date laydate-icon" value="{$project.qdtime}" placeholder="签单时间" name="qdtime" >
+                        </div>
+                        <label class="col-sm-2 control-label">合同截至时间：</label>
+                        <div class=" col-sm-3">
+						 {if !$project.id}
+                            <input id="hello3"  class="form-control layer-date laydate-icon" value="{$project.worktime}" placeholder="合同截止时间" name="worktime" autocomplete="off" >
+							{else}
+							{if $adminid=='1'}
+							<input id="hello3"  class="form-control layer-date laydate-icon" value="{$project.worktime}" placeholder="合同截止时间" name="worktime" autocomplete="off" >
+							{else}
+							<input  class="form-control layer-date laydate-icon" value="{$project.worktime}" placeholder="合同截止时间" readonly="readonly" name="worktime" autocomplete="off" >
+							{/if}
+							{/if}
+                        </div>
+                        <!--<div class=" col-sm-3">
+                            <input type="text" name="worktime" value="{$project.worktime}" placeholder="输入项目时间如2020-01-01"  class="form-control" >
+                        </div>-->
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">下单时间：</label>
+                        <div class=" col-sm-3" style="padding-left: 0px;">
+                            <input id="hello2"  class="form-control layer-date laydate-icon" value="{$project.addtime}" placeholder="下单时间" name="addtime" autocomplete="off" >
+                        </div>
+                        <!--<label class="col-sm-2 control-label">上线时间：</label>
+                        <div class=" col-sm-3">
+                            <input id="hello3"  class="form-control layer-date laydate-icon" value="{$project.onlinetime}" placeholder="上线时间" name="onlinetime" >
+                        </div>-->
+                        <label class="col-sm-2 control-label">续费金额：</label>
+                        <div class=" col-sm-3">
+						{if !$project.id}
+                            <input type="text" name="xufeimoney"  value="{$project.xufeimoney}" placeholder="输入续费金额"  class="form-control" >
+							{else}
+							{if $adminid=='1'}
+							<input type="text" name="xufeimoney"  value="{$project.xufeimoney}" placeholder="输入续费金额"  class="form-control" >
+							{else}
+							<input type="text" name="xufeimoney"  value="{$project.xufeimoney}" placeholder="输入续费金额"  class="form-control" readonly="readonly">
+							{/if}
+							{/if}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 " style="text-align: right;">归还合同：</label>
+                        <div class=" col-sm-2" style="padding-left: 0px;">
+                            <label>
+                                <input type="radio" name="htmanage" id="optionsRadios1"
+                                {if (!$project.id||($adminid == 1))}{else}disabled {/if}    
+								   value="1" {if $project.htmanage=="1"}checked{/if}> 是
+                            </label>
+                            <label>
+                                <input type="radio" name="htmanage" id="optionsRadios2"
+                                  {if (!$project.id||($adminid == 1))}{else}disabled {/if} 
+								   value="0" {if $project.htmanage=="0"}checked{/if}> 否
+                            </label>
+                         </div>
+                        <label class="col-sm-1 " style="text-align: right;">续费：</label>
+                        <div class=" col-sm-2" style="padding-left: 0px;">
+                            <label >
+                                <input type="radio" name="xufei" id="optionsRadios3"
+                                       value="1" {if $project.xufei=="1"}checked{/if}> 是
+                            </label>
+                            <label>
+                                <input type="radio" name="xufei" id="optionsRadios4"
+                                       value="0" {if $project.xufei=="0"}checked{/if}> 否
+                            </label>
+                        </div>
+                        <label class="col-sm-1 " style="text-align: right;">转单：</label>
+                        <div class=" col-sm-2" style="padding-left: 0px;">
+                            <label>
+                                <input type="radio" name="zhuandan" id="optionsRadios5"
+								 {if (!$project.id||($adminid == 1))}{else}disabled {/if} 
+                                       value="1" {if $project.zhuandan=="1"}checked{/if}> 是
+                            </label>
+                            <label>
+                                <input type="radio" name="zhuandan" id="optionsRadios6"
+								 {if (!$project.id||($adminid == 1))}{else}disabled {/if}
+                                       value="0" {if $project.zhuandan=="0"}checked{/if}> 否
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">部门：</label>
+                        <div class=" col-sm-3" style="padding-left: 0px;">
+                            {if empty($adminuser)}
+                            <input type="text" name="swdepent" value="{$project.swdepent}" placeholder="输入部门"  class="form-control" >
+                            {else}
+                            <select name="swdepent" class="form-control">
+                                {volist name="adminuser" id="vo"}
+                                <option {if $project.swdepent==$vo.nickname}selected{/if} value="{$vo.nickname}">{$vo.nickname}</option>
+                                {/volist}
+                            </select>
+                            {/if}
+                            <!---->
+                               </div>
+							   
+                        <label class="col-sm-2 control-label">跟进员：</label>
+                            {if !$project.id}
+							<div class=" col-sm-3">
+                                <input type="text" name="kfuser" value="{$project.kfuser}" placeholder="输入跟进员"  class="form-control" >
+                            </div>
+							{else}
+							{if $adminid=='1'}
+							<div class=" col-sm-3">
+                                <input type="text" name="kfuser" value="{$project.kfuser}" placeholder="输入跟进员"  class="form-control" >
+                            </div>
+							{else}
+							<div class=" col-sm-3">
+                                <input type="text" name="kfuser" value="{$project.kfuser}" placeholder="输入跟进员"  class="form-control" readonly="readonly" >
+                            </div>
+							{/if}
+							{/if}
+                            
+                            <!--<select name="swdepent" class="form-control">
+                                <option {if $project.status=="待定"}selected{/if} value="待定">待定</option>
+                                <option {if $project.status=="设计中"}selected{/if} value="设计中" >设计中</option>
+                                <option {if $project.status=="前端制作中"}selected{/if} value="前端制作中">前端制作中</option>
+                                <option {if $project.status=="程序制作中"}selected{/if} value="程序制作中">程序制作中</option>
+                                <option {if $project.status=="已上线"}selected{/if} value="已上线">已上线</option>
+                                <option {if $project.status=="修改中"}修改中{/if} value="修改中">修改中</option>
+                            </select>-->
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">备注：</label>
+                        <div class="input-group col-sm-8">
+                            <textarea type="text" rows="5" name="mark" id="sitedesc" placeholder="输入备注" class="form-control">{$project.mark}</textarea>
+                        </div>
+                    </div>
+                  <div class="form-group">
+                        <label class="col-sm-2 control-label">操作说明：</label>
+                        <div class="input-group col-sm-8">
+                            <textarea type="text" rows="5" id="descs" name="remark"  placeholder="输入操作说明" class="form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-3">
+                            <button class="btn btn-primary" type="button" onclick="tosumbit();"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                            <a class="btn btn-danger" href="javascript:history.go(-1);"><i class="fa fa-close"></i> 返回</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script type="text/javascript">
+    //导航高亮
+    highlight_subnav("{:url('scrwap/addwebsite')}");
+
+    laydate({
+        elem: '#hello1', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
+        event: 'focus' //响应事件。如果没有传入event，则按照默认的click
+    });
+    laydate({
+        elem: '#hello2', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
+        event: 'focus' //响应事件。如果没有传入event，则按照默认的click
+    });
+    laydate({
+        elem: '#hello3', //目标元素。由于laydate.js封装了一个轻量级的选择器引擎，因此elem还允许你传入class、tag但必须按照这种方式 '#id .class'
+        event: 'focus' //响应事件。如果没有传入event，则按照默认的click
+    });
+    function tosumbit() {
+        var t=$("#descs").val();
+        /*if(!t){
+          alert('操作说明必须填写');
+        }else{*/
+            $("#myform").submit();
+        //}
+    }
+</script>
+{/block}
